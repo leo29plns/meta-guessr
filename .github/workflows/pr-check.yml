@@ -1,0 +1,12 @@
+name: On PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  quality-gate:
+    name: Run checks
+    uses: ./.github/workflows/quality-gate.yml 
+    with:
+      branch: ${{ github.head_ref }}

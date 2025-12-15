@@ -11,6 +11,12 @@ permissions:
   id-token: write
 
 jobs:
+  quality-gate:
+    name: Run checks
+    uses: ./.github/workflows/quality-gate.yml 
+    with:
+      branch: ${{ github.head_ref }}
+
   deploy:
     runs-on: ubuntu-latest
     environment:

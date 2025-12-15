@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- <base href="https://leo29plns.github.io/live-transit/"> -->
+
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css">
 
@@ -23,26 +25,50 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 
     <!-- Primary Meta Tags -->
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
+    <meta name="title" content="" />
+    <meta name="description" content="" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:url" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+    <meta property="twitter:url" content="" />
+    <meta property="twitter:title" content="" />
+    <meta property="twitter:description" content="" />
+    <meta property="twitter:image" content="" />
 </head>
 <body>
-    <h1>Hello</h1>
+    <aside class="overlay gui icon">
+        <img src="./assets/icons/train_p.svg" alt="">
+    </aside>
 
-    <div id="map" style="height: 50rem;"></div>
+    <aside class="overlay gui menu">
+        <form action="">
+
+            <form-group>
+                <label for="code">Code mission</label>
+                <select name="" id="code">
+                    <option value="">PICI 113640</option>
+                    <option value="">MICI 113631</option>
+                </select>
+            </form-group>
+
+            <form-group>
+                <label for="date">Date</label>
+                <input type="date" name="" id="date">
+            </form-group>
+
+            <form-group>
+                <label for="time">Horaire</label>
+                <input type="time" name="" id="time">
+            </form-group>
+        </form>
+    </aside>
+
+    <div id="map"></div>
 
     <script type="module" src="./index.js"></script>
 </body>

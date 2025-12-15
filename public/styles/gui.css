@@ -1,0 +1,19 @@
+.icon {
+	inset-inline-end: var(--body-padding);
+	inset-block-start: var(--body-padding);
+
+	img {
+		width: 4rem;
+	}
+}
+
+.menu {
+	inset-inline-start: var(--body-padding);
+	inset-block-end: var(--body-padding);
+	background-color: #fff;
+
+	form {
+		display: flex;
+		gap: 0.5rem;
+	}
+}

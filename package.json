@@ -1,0 +1,32 @@
+{
+	"name": "live-transit",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"lint": "pnpm exec biome lint",
+		"lint:fix": "pnpm exec biome lint --write",
+		"format": "pnpm exec biome format",
+		"format:fix": "pnpm exec biome format --write",
+		"check": "pnpm exec biome check",
+		"check:fix": "pnpm exec biome check --write",
+		"dev": "pnpm exec live-server ./public",
+		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*": [
+			"biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+		]
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.23.0",
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.8",
+		"@commitlint/cli": "^20.2.0",
+		"@commitlint/config-conventional": "^20.2.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.7",
+		"live-server": "^1.2.2"
+	}
+}
