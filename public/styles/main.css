@@ -1,0 +1,10 @@
+html, body {
+    --body-padding: 1.5rem;
+
+    min-height: 100dvh;
+    display: grid;
+}
+
+form-group {
+    display: grid;
+}
