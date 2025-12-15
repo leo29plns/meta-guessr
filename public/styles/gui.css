@@ -1,24 +1,24 @@
 aside.gui {
-    position: absolute;
-    z-index: 999;
+	position: absolute;
+	z-index: 999;
 }
 
 .icon {
-    inset-inline-end: var(--body-padding);
-    inset-block-start: var(--body-padding);
-    
-    img {
-        width: 4rem;
-    }
+	inset-inline-end: var(--body-padding);
+	inset-block-start: var(--body-padding);
+
+	img {
+		width: 4rem;
+	}
 }
 
 .menu {
-    inset-inline-start: var(--body-padding);
-    inset-block-end: var(--body-padding);
-    background-color: #FFF;
-    
-    form {
-        display: flex;
-        gap: 0.5rem;
-    }
+	inset-inline-start: var(--body-padding);
+	inset-block-end: var(--body-padding);
+	background-color: #fff;
+
+	form {
+		display: flex;
+		gap: 0.5rem;
+	}
 }
