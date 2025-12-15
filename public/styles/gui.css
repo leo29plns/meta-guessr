@@ -1,8 +1,3 @@
-aside.gui {
-	position: absolute;
-	z-index: 999;
-}
-
 .icon {
 	inset-inline-end: var(--body-padding);
 	inset-block-start: var(--body-padding);
