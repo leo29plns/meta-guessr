@@ -32,7 +32,7 @@ jobs:
       - name: Artefact upload
         uses: actions/upload-pages-artifact@v4
         with:
-          path: "./public"
+          path: "./src/public"
 
       - name: Deploy to GitHub Pages
         id: deployment
