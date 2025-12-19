@@ -12,11 +12,11 @@
 
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["public/*"]
+			"@/*": ["src/public/*"]
 		},
 
 		"skipLibCheck": true
 	},
 	"include": ["**/*.js"],
-	"exclude": ["node_modules", "public/libraries"]
+	"exclude": ["node_modules", "src/public/libraries"]
 }
