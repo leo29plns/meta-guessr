@@ -10,6 +10,7 @@
 		"type-check": "tsc",
 		"check": "pnpm exec biome check && pnpm run type-check",
 		"check:fix": "pnpm exec biome check --write",
+		"test": "vitest",
 		"dev": "pnpm exec live-server ./public",
 		"prepare": "husky"
 	},
@@ -30,6 +31,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
 		"live-server": "^1.2.2",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.16"
 	}
 }
