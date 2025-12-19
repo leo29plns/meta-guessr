@@ -10,8 +10,8 @@
 		"type-check": "tsc",
 		"check": "pnpm exec biome check && pnpm run type-check",
 		"check:fix": "pnpm exec biome check --write",
-		"test": "vitest",
-		"dev": "pnpm exec live-server ./public",
+		"test": "vitest run",
+		"dev": "pnpm exec live-server ./src/public",
 		"prepare": "husky"
 	},
 	"lint-staged": {

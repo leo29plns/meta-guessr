@@ -1,22 +1,3 @@
-import { Map as LeafletMap, TileLayer } from 'leaflet';
-import { consoleLog } from 'src/public/scripts/console-log.js';
+import { App } from './scripts/App.js';
 
-const map = new LeafletMap('map').setView([48.8566, 2.3522], 13);
-
-new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	attribution:
-		'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-}).addTo(map);
-
-/**
- *
- * @param {number} n
- * @returns
- */
-const bonjour = (n) => {
-	return n;
-};
-
-bonjour(1);
-
-consoleLog();
+new App();
