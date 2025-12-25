@@ -1,19 +1,35 @@
-.icon {
-  inset-inline-end: var(--body-padding);
-  inset-block-start: var(--body-padding);
+.gui {
+  position: absolute;
+  z-index: 999;
+  inset: 0;
+  display: grid;
+  padding: 3rem;
+  align-content: space-between;
 
-  img {
-    width: 4rem;
+  .start,
+  .end {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .end {
+    align-items: end;
+  }
+
+  @media print {
+    display: none;
   }
 }
 
-.menu {
-  inset-inline-start: var(--body-padding);
-  inset-block-end: var(--body-padding);
-  background-color: #fff;
+aside.metadata {
+  dl {
+    display: grid;
+    gap: 1rem;
+  }
+}
 
+aside.actions {
   form {
-    display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 }

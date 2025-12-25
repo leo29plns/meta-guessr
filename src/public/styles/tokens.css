@@ -1,0 +1,9 @@
+:root {
+  --color-primary: oklch(1 0 1);
+  --color-on-primary: oklch(0.1776 0 0);
+}
+
+[data-mode="dark"] {
+  --color-primary: oklch(0.1776 0 0);
+  --color-on-primary: oklch(1 0 1);
+}

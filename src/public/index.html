@@ -37,35 +37,82 @@
     <meta property="twitter:description" content="">
     <meta property="twitter:image" content="">
 </head>
-<body>
-    <aside class="overlay gui icon">
-        <img src="./assets/icons/train_p.svg" alt="">
-    </aside>
+<body data-mode>
+    <div class="gui">
+        <div class="start">
+            <aside class="metadata">
+                <h1>map: metadata</h1>
+                <dl>
+                    <data-group>
+                        <dt>Densité démographique</dt>
+                        <dd><data value="3500">3 500</data> pers/km²</dd>
+                    </data-group>
 
-    <aside class="overlay gui menu">
-        <form action="">
-            <form-group>
-                <label for="date">Date</label>
-                <input type="date" name="" id="date">
-            </form-group>
+                    <data-group>
+                        <dt>Superficie</dt>
+                        <dd><data value="54321">54 321</data> km²</dd>
+                    </data-group>
 
-            <form-group>
-                <label for="time">Horaire</label>
-                <input type="time" name="" id="time">
-            </form-group>
+                    <data-group>
+                        <dt>Population totale</dt>
+                        <dd><data value="12000000">12 000 000</data> hab.</dd>
+                    </data-group>
+                </dl>
+            </aside>
+        </div>
 
-            <form-group>
-                <label for="code">Code mission</label>
-                <select name="" id="code">
-                    <option value="">PICI 113640</option>
-                    <option value="">MICI 113631</option>
+        <div class="end">
+            <aside class="layers">
+                <select name="layer" id="layer">
+                    <option value="layer-1">Layer 1</option>
+                    <option value="layer-2">Layer 2</option>
+                    <option value="layer-3">Layer 3</option>
                 </select>
-            </form-group>
-        </form>
-    </aside>
+            </aside>
+            <aside class="actions">
+                <form action="">
+                    <form-group>
+                        <label for="lat">Latitude</label>
+                        <input type="number" name="lat" id="lat" step="0.000001" min="-180" max="180" required>
+                    </form-group>
+                    <form-group>
+                        <label for="long">Longitude</label>
+                        <input type="number" name="long" id="long" step="0.000001" min="0" max="360" required>
+                    </form-group>
+                    <button type="submit">Guess!</button>
+                </form>
+            </aside>
+        </div>
+    </div>
 
     <div id="map"></div>
 
     <script type="module" src="./index.js"></script>
 </body>
 </html>
+
+
+
+
+
+<!-- <aside class="overlay gui menu">
+            <form action="">
+                <form-group>
+                    <label for="date">Date</label>
+                    <input type="date" name="" id="date">
+                </form-group>
+    
+                <form-group>
+                    <label for="time">Horaire</label>
+                    <input type="time" name="" id="time">
+                </form-group>
+    
+                <form-group>
+                    <label for="code">Code mission</label>
+                    <select name="" id="code">
+                        <option value="">PICI 113640</option>
+                        <option value="">MICI 113631</option>
+                    </select>
+                </form-group>
+            </form>
+        </aside> -->
