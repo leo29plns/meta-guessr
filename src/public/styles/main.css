@@ -1,27 +1,27 @@
 html,
 body {
-	--body-padding: 1.5rem;
+  --body-padding: 1.5rem;
 
-	transition: all 125ms ease;
-	overflow-wrap: break-word;
-	text-rendering: optimizeLegibility;
-	font-family: sans-serif;
+  transition: all 125ms ease;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  font-family: sans-serif;
 
-	min-height: 100dvh;
-	display: grid;
+  min-height: 100dvh;
+  display: grid;
 }
 
 form-group {
-	display: grid;
+  display: grid;
 }
 
 aside.overlay {
-	position: absolute;
-	z-index: 999;
+  position: absolute;
+  z-index: 999;
 }
 
 @media print {
-	.gui {
-		display: none;
-	}
+  .gui {
+    display: none;
+  }
 }
