@@ -12,11 +12,21 @@ export class MGMap {
    * @param {number} [zoom]
    */
   constructor(containerId = 'map', center = [46.493889, 2.602778], zoom = 6) {
-    this.#map = new LeafletMap(containerId).setView(center, zoom);
+    this.#map = new LeafletMap(containerId, {
+      zoomControl: false,
+    }).setView(center, zoom);
 
     new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
+  }
+
+  zoomIn() {
+    this.#map.setZoom(this.#map.getZoom() + 1);
+  }
+
+  zoomOut() {
+    this.#map.setZoom(this.#map.getZoom() - 1);
   }
 }

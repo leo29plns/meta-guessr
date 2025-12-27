@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document 1</title>
+    <title>DataGuessr</title>
 
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css">
@@ -59,6 +59,12 @@
                     </data-group>
                 </dl>
             </aside>
+            <aside class="controls">
+                <form-group>
+                    <button type="button" id="zoom-in" aria-label="Faire un zoom avant">+</button>
+                    <button type="button" id="zoom-out" aria-label="Faire un zoom arrière">-</button>
+                </form-group>
+            </aside>
         </div>
 
         <div class="end">
@@ -90,29 +96,3 @@
     <script type="module" src="./index.js"></script>
 </body>
 </html>
-
-
-
-
-
-<!-- <aside class="overlay gui menu">
-            <form action="">
-                <form-group>
-                    <label for="date">Date</label>
-                    <input type="date" name="" id="date">
-                </form-group>
-    
-                <form-group>
-                    <label for="time">Horaire</label>
-                    <input type="time" name="" id="time">
-                </form-group>
-    
-                <form-group>
-                    <label for="code">Code mission</label>
-                    <select name="" id="code">
-                        <option value="">PICI 113640</option>
-                        <option value="">MICI 113631</option>
-                    </select>
-                </form-group>
-            </form>
-        </aside> -->
