@@ -1,10 +1,13 @@
 :root {
+  --button-border-radius: 0.25rem;
+
   --color-primary: oklch(1 0 1);
+  --color-primary-hover: oklch(0.9 0 1);
   --color-on-primary: oklch(0.1776 0 0);
-  --color-on-primary-hover: oklch(0.3776 0 0);
 }
 
 [data-mode="dark"] {
   --color-primary: oklch(0.1776 0 0);
+  --color-primary-hover: oklch(0.3776 0 0);
   --color-on-primary: oklch(1 0 1);
 }

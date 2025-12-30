@@ -1,6 +1,8 @@
-@import "styles/reset.css";
-@import "styles/tokens.css";
-@import "styles/accessibility.css";
-@import "styles/main.css";
-@import "styles/map.css";
-@import "styles/gui.css";
+@import url("styles/reset.css") layer(reset);
+@import url("styles/tokens.css") layer(tokens);
+@import url("styles/accessibility.css") layer(accessibility);
+@import url("styles/main.css") layer(main);
+@import url("styles/map.css") layer(map);
+@import url("styles/gui.css") layer(gui);
+
+@layer reset, tokens, accessibility, main, map, gui;

@@ -45,30 +45,20 @@ aside.controls {
   gap: 1rem;
 
   .zoom {
-    --border-radius: 0.25rem;
-
     display: grid;
     background-color: var(--color-on-primary);
     gap: 0.0625rem;
-    border-radius: var(--border-radius);
+    border-radius: var(--button-border-radius);
 
     button {
-      border: 0;
-      padding: 0.5rem;
-      background-color: var(--color-primary);
-
       &:first-child {
-        border-start-start-radius: var(--border-radius);
-        border-start-end-radius: var(--border-radius);
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
       }
 
       &:last-child {
-        border-end-start-radius: var(--border-radius);
-        border-end-end-radius: var(--border-radius);
-      }
-
-      &:hover {
-        background-color: var(--color-on-primary-hover);
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
       }
     }
   }
@@ -78,4 +68,9 @@ aside.actions {
   form {
     gap: 1rem;
   }
+}
+
+dialog.settings {
+  display: grid;
+  gap: 1rem;
 }

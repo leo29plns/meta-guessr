@@ -35,7 +35,11 @@ export class App {
 
     radioInputs.forEach((input) => {
       input.addEventListener('change', (_) => {
-        this.#mode.setMode(input.value);
+        this.#mode.setMode(
+          /** @type {import('./classes/Mode/types').SelectableMode} */ (
+            input.value
+          ),
+        );
       });
     });
   }

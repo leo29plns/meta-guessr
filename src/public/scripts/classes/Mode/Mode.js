@@ -1,4 +1,4 @@
-import { MODES } from './types.js';
+import { MODES, SELECTABLE_MODES } from './types.js';
 
 export class Mode {
   /**
@@ -7,7 +7,7 @@ export class Mode {
   #mediaQuery;
 
   /**
-   * @type {typeof MODES[keyof typeof MODES]}
+   * @type {import('./types.js').SelectableMode}
    */
   #storedMode;
 
@@ -18,23 +18,25 @@ export class Mode {
     this.#applyMode();
 
     this.#mediaQuery.addEventListener('change', () => {
-      if (this.#storedMode === MODES.SYSTEM) {
+      if (this.#storedMode === SELECTABLE_MODES.SYSTEM) {
         this.#applyMode();
       }
     });
   }
 
   /**
-   * @returns {typeof MODES[keyof typeof MODES]}
+   * @returns {import('./types.js').SelectableMode}
    */
   #getStoredMode() {
     const mode = localStorage.getItem('mode');
 
-    return mode === MODES.LIGHT || mode === MODES.DARK ? mode : MODES.SYSTEM;
+    return mode === SELECTABLE_MODES.LIGHT || mode === SELECTABLE_MODES.DARK
+      ? mode
+      : SELECTABLE_MODES.SYSTEM;
   }
 
   /**
-   * @returns {typeof MODES.LIGHT | typeof MODES.DARK}
+   * @returns {import('./types.js').Mode}
    */
   #getSystemMode() {
     return this.#mediaQuery.matches ? MODES.DARK : MODES.LIGHT;
@@ -42,16 +44,19 @@ export class Mode {
 
   #applyMode() {
     const mode =
-      this.#storedMode === MODES.SYSTEM
+      this.#storedMode === SELECTABLE_MODES.SYSTEM
         ? this.#getSystemMode()
         : this.#storedMode;
 
     document.body.dataset.mode = mode;
+
+    const event = new CustomEvent('mode', { detail: { mode } });
+    document.dispatchEvent(event);
   }
 
   /**
    * Set a mode and save it as user preference
-   * @param {typeof MODES[keyof typeof MODES]} mode
+   * @param {import('./types.js').SelectableMode} mode
    */
   setMode(mode) {
     localStorage.setItem('mode', mode);

@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 
-* {
+*:not(dialog) {
   margin: 0;
 }
 

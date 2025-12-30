@@ -41,6 +41,26 @@ form-group {
   }
 }
 
+dialog {
+  border: none;
+
+  &::backdrop {
+    background-color: oklch(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.button {
+  border: 0;
+  padding: 0.5rem;
+  background-color: var(--color-primary);
+  border-radius: var(--button-border-radius);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
 ::view-transition-group(*) {
   animation-duration: 500ms;
   animation-timing-function: ease;
