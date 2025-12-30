@@ -1,4 +1,4 @@
-import { MGMap } from '@/scripts/classes/MGMap/MGMap.js';
+import { MgMap } from '@/scripts/classes/MgMap/MgMap.js';
 import { Mode } from '@/scripts/classes/Mode/Mode.js';
 
 export class App {
@@ -7,15 +7,16 @@ export class App {
    */
   #mode;
   /**
-   * @type {MGMap}
+   * @type {MgMap}
    */
   #mgMap;
 
   constructor() {
     this.#mode = new Mode();
-    this.#mgMap = new MGMap();
+    this.#mgMap = new MgMap();
 
     this.#setupZoomControls();
+    this.#setupModeControls();
   }
 
   #setupZoomControls() {
@@ -26,5 +27,16 @@ export class App {
 
     zoomInBtn.addEventListener('click', () => this.#mgMap.zoomIn());
     zoomOutBtn.addEventListener('click', () => this.#mgMap.zoomOut());
+  }
+
+  #setupModeControls() {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const radioInputs = document.querySelectorAll('input[name="mode"]');
+
+    radioInputs.forEach((input) => {
+      input.addEventListener('change', (_) => {
+        this.#mode.setMode(input.value);
+      });
+    });
   }
 }

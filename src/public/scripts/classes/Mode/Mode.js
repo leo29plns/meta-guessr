@@ -48,4 +48,15 @@ export class Mode {
 
     document.body.dataset.mode = mode;
   }
+
+  /**
+   * Set a mode and save it as user preference
+   * @param {typeof MODES[keyof typeof MODES]} mode
+   */
+  setMode(mode) {
+    localStorage.setItem('mode', mode);
+    this.#storedMode = mode;
+
+    this.#applyMode();
+  }
 }

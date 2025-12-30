@@ -63,3 +63,11 @@ h5,
 h6 {
   text-wrap: balance;
 }
+
+/*
+  Default
+*/
+
+button {
+  cursor: pointer;
+}

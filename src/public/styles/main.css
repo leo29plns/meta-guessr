@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/noUnknownTypeSelector: view transitions */
 :root {
   color-scheme: light;
 
@@ -31,4 +32,22 @@ body {
 form,
 form-group {
   display: grid;
+}
+
+form-group {
+  &:has(input[type="radio"]) {
+    display: flex;
+    gap: 0.4rem;
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: 500ms;
+  animation-timing-function: ease;
+}
+
+::view-transition-old(*):only-child,
+::view-transition-new(*):only-child,
+::view-transition-group(root) {
+  animation-duration: 0ms;
 }
