@@ -34,6 +34,8 @@ export class App {
     const radioInputs = document.querySelectorAll('input[name="mode"]');
 
     radioInputs.forEach((input) => {
+      if (input.value === this.#mode.storedMode) input.checked = true;
+
       input.addEventListener('change', (_) => {
         this.#mode.setMode(
           /** @type {import('./classes/Mode/types').SelectableMode} */ (

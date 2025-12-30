@@ -28,9 +28,11 @@ export class Mode {
    * @returns {import('./types.js').SelectableMode}
    */
   #getStoredMode() {
-    const mode = localStorage.getItem('mode');
+    const mode = /** @type {import('./types.js').SelectableMode | null} */ (
+      localStorage.getItem('mode')
+    );
 
-    return mode === SELECTABLE_MODES.LIGHT || mode === SELECTABLE_MODES.DARK
+    return mode && Object.values(SELECTABLE_MODES).includes(mode)
       ? mode
       : SELECTABLE_MODES.SYSTEM;
   }
@@ -63,5 +65,12 @@ export class Mode {
     this.#storedMode = mode;
 
     this.#applyMode();
+  }
+
+  /**
+   * Returns the currently stored user mode.
+   */
+  get storedMode() {
+    return this.#storedMode;
   }
 }
