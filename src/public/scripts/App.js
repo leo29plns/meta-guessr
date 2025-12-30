@@ -1,4 +1,4 @@
-import { MgMap } from '@/scripts/classes/MgMap/MgMap.js';
+import { GeoMap } from '@/scripts/classes/GeoMap/GeoMap.js';
 import { Mode } from '@/scripts/classes/Mode/Mode.js';
 
 export class App {
@@ -7,13 +7,13 @@ export class App {
    */
   #mode;
   /**
-   * @type {MgMap}
+   * @type {GeoMap}
    */
-  #mgMap;
+  #geoMap;
 
   constructor() {
     this.#mode = new Mode();
-    this.#mgMap = new MgMap();
+    this.#geoMap = new GeoMap();
 
     this.#setupZoomControls();
     this.#setupModeControls();
@@ -25,8 +25,8 @@ export class App {
 
     if (!zoomInBtn || !zoomOutBtn) throw new Error('No zoom button.');
 
-    zoomInBtn.addEventListener('click', () => this.#mgMap.zoomIn());
-    zoomOutBtn.addEventListener('click', () => this.#mgMap.zoomOut());
+    zoomInBtn.addEventListener('click', () => this.#geoMap.zoomIn());
+    zoomOutBtn.addEventListener('click', () => this.#geoMap.zoomOut());
   }
 
   #setupModeControls() {

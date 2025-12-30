@@ -1,6 +1,6 @@
 import { Map as LeafletMap, TileLayer } from 'leaflet';
 
-export class MgMap {
+export class GeoMap {
   /**
    * @type {LeafletMap}
    */
