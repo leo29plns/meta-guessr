@@ -23,7 +23,7 @@ export class App {
     const zoomInBtn = document.getElementById('zoom-in');
     const zoomOutBtn = document.getElementById('zoom-out');
 
-    if (!zoomInBtn || !zoomOutBtn) throw new Error('No zoom button.');
+    if (!zoomInBtn || !zoomOutBtn) return;
 
     zoomInBtn.addEventListener('click', () => this.#geoMap.zoomIn());
     zoomOutBtn.addEventListener('click', () => this.#geoMap.zoomOut());
@@ -38,7 +38,7 @@ export class App {
 
       input.addEventListener('change', (_) => {
         this.#mode.setMode(
-          /** @type {import('./classes/Mode/types').SelectableMode} */ (
+          /** @type {import('./classes/Mode/consts').SelectableMode} */ (
             input.value
           ),
         );

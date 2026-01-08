@@ -1,4 +1,4 @@
-import { MODES, SELECTABLE_MODES } from './types.js';
+import { MODES, SELECTABLE_MODES } from './consts.js';
 
 export class Mode {
   /**
@@ -7,7 +7,7 @@ export class Mode {
   #mediaQuery;
 
   /**
-   * @type {import('./types.js').SelectableMode}
+   * @type {import('./consts.js').SelectableMode}
    */
   #storedMode;
 
@@ -25,10 +25,10 @@ export class Mode {
   }
 
   /**
-   * @returns {import('./types.js').SelectableMode}
+   * @returns {import('./consts.js').SelectableMode}
    */
   #getStoredMode() {
-    const mode = /** @type {import('./types.js').SelectableMode | null} */ (
+    const mode = /** @type {import('./consts.js').SelectableMode | null} */ (
       localStorage.getItem('mode')
     );
 
@@ -38,7 +38,7 @@ export class Mode {
   }
 
   /**
-   * @returns {import('./types.js').Mode}
+   * @returns {import('./consts.js').Mode}
    */
   #getSystemMode() {
     return this.#mediaQuery.matches ? MODES.DARK : MODES.LIGHT;
@@ -58,7 +58,7 @@ export class Mode {
 
   /**
    * Set a mode and save it as user preference
-   * @param {import('./types.js').SelectableMode} mode
+   * @param {import('./consts.js').SelectableMode} mode
    */
   setMode(mode) {
     localStorage.setItem('mode', mode);

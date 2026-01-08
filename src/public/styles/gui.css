@@ -38,6 +38,11 @@ aside.metadata {
     display: grid;
     gap: 1rem;
   }
+
+  data {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
 }
 
 aside.controls {
@@ -71,6 +76,10 @@ aside.actions {
 }
 
 dialog.settings {
-  display: grid;
   gap: 1rem;
+  justify-items: start;
+
+  &[open] {
+    display: grid;
+  }
 }
