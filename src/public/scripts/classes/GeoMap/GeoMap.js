@@ -11,7 +11,7 @@ export class GeoMap {
    * @param {[number, number]} [center]
    * @param {number} [zoom]
    */
-  constructor(containerId = 'map', center = [46.493889, 2.602778], zoom = 6) {
+  constructor(containerId = 'map', center = [48.709167, 2.504722], zoom = 9) {
     this.#map = new LeafletMap(containerId, {
       zoomControl: false,
     }).setView(center, zoom);

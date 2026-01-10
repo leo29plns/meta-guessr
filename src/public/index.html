@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css">
 
+    <link rel="preconnect" href="https://tile.openstreetmap.org">
+
     <script type="importmap">
     {
       "imports": {
@@ -80,8 +82,13 @@
           </aside>
           <aside class="controls">
             <div class="settings">
-              <button type="button" commandfor="settings" command="show-modal">
-                Ouvrir les paramètres
+              <button
+                type="button"
+                commandfor="settings"
+                command="show-modal"
+                aria-label="Ouvrir les paramètres"
+              >
+                <ui-icon name="settings"></ui-icon>
               </button>
             </div>
             <div class="zoom">
@@ -91,7 +98,7 @@
                 class="button"
                 aria-label="Faire un zoom avant"
               >
-                +
+                <ui-icon name="plus"></ui-icon>
               </button>
               <button
                 type="button"
@@ -99,7 +106,7 @@
                 class="button"
                 aria-label="Faire un zoom arrière"
               >
-                -
+                <ui-icon name="minus"></ui-icon>
               </button>
             </div>
           </aside>
@@ -168,11 +175,13 @@
         </form-group>
       </fieldset>
 
-      <button command="request-close" commandfor="settings">Fermer</button>
-
-      <p>
-        I am a text paragraph <ui-icon name="plus"></ui-icon>... with an icon
-      </p>
+      <button
+        command="request-close"
+        commandfor="settings"
+        aria-label="Fermer les paramètres"
+      >
+        <ui-icon name="x"></ui-icon>
+      </button>
     </dialog>
 
     <template id="template-ui-icon">

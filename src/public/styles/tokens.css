@@ -1,8 +1,7 @@
 :root {
   --button-border-radius: 0.25rem;
 
-  /* --color-base: oklch(0.1776 0 0); */
-  --color-base: oklch(57.868% 0.20053 26.137);
+  --color-base: oklch(0.1776 0 0);
   --color-info: oklch(60.769% 0.17124 274.512);
   --color-success: oklch(80.683% 0.1808 146.289);
   --color-warning: oklch(74.728% 0.13038 56.415);
