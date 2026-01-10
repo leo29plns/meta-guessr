@@ -29,6 +29,10 @@ body {
   color: var(--color-on-primary);
 }
 
+main {
+  display: grid;
+}
+
 form,
 form-group {
   display: grid;

@@ -50,7 +50,7 @@ export class Mode {
         ? this.#getSystemMode()
         : this.#storedMode;
 
-    document.body.dataset.mode = mode;
+    document.documentElement.dataset.mode = mode;
 
     const event = new CustomEvent('mode', { detail: { mode } });
     document.dispatchEvent(event);

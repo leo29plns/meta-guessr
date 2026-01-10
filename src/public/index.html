@@ -1,9 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr" dir="ltr" data-mode>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataGuessr</title>
+
+    <script>
+    (() => {
+      const stored = localStorage.getItem('mode');
+      const system = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+
+      const mode = stored === 'dark' || stored === 'light' ? stored : system;
+
+      document.documentElement.dataset.mode = mode;
+    })();
+    </script>
 
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./libraries/leaflet/leaflet.css">
@@ -37,101 +50,102 @@
     <meta property="twitter:description" content="">
     <meta property="twitter:image" content="">
   </head>
-  <body data-mode>
-    <div class="gui">
-      <div class="start">
-        <aside class="metadata">
-          <h1>map: metadata</h1>
-          <dl>
-            <data-group>
-              <dt>Densité démographique</dt>
-              <dd>
-                <data value="3500">3 500</data>pers/km²
-              </dd>
-            </data-group>
-
-            <data-group>
-              <dt>Superficie</dt>
-              <dd>
-                <data value="54321">54 321</data>km²
-              </dd>
-            </data-group>
-
-            <data-group>
-              <dt>Population totale</dt>
-              <dd>
-                <data value="12000000">12 000 000</data>hab.
-              </dd>
-              <data-scale>DATA</data-scale>
-            </data-group>
-          </dl>
-        </aside>
-        <aside class="controls">
-          <div class="settings">
-            <button type="button" commandfor="settings" command="show-modal">
-              Ouvrir les paramètres
-            </button>
-          </div>
-          <div class="zoom">
-            <button
-              type="button"
-              id="zoom-in"
-              class="button"
-              aria-label="Faire un zoom avant"
-            >
-              +
-            </button>
-            <button
-              type="button"
-              id="zoom-out"
-              class="button"
-              aria-label="Faire un zoom arrière"
-            >
-              -
-            </button>
-          </div>
-        </aside>
+  <body>
+    <main>
+      <div class="gui">
+        <div class="start">
+          <aside class="metadata">
+            <h1>map: metadata</h1>
+            <ul>
+              <li>
+                <p>Densité démographique</p>
+                <data-group>
+                  <data value="3500">3 500</data>pers/km²
+                </data-group>
+              </li>
+              <li>
+                <p>Superficie</p>
+                <data-group>
+                  <data value="54321">54 321</data>km²
+                </data-group>
+              </li>
+              <li>
+                <p>Population totale</p>
+                <data-group>
+                  <data value="12000000">12 000 000</data>hab.
+                  <data-scale>DATA</data-scale>
+                </data-group>
+              </li>
+            </ul>
+          </aside>
+          <aside class="controls">
+            <div class="settings">
+              <button type="button" commandfor="settings" command="show-modal">
+                Ouvrir les paramètres
+              </button>
+            </div>
+            <div class="zoom">
+              <button
+                type="button"
+                id="zoom-in"
+                class="button"
+                aria-label="Faire un zoom avant"
+              >
+                +
+              </button>
+              <button
+                type="button"
+                id="zoom-out"
+                class="button"
+                aria-label="Faire un zoom arrière"
+              >
+                -
+              </button>
+            </div>
+          </aside>
+        </div>
+        <div class="end">
+          <aside class="layers">
+            <select name="layer" id="layer">
+              <option value="layer-1">Layer 1</option>
+              <option value="layer-2">Layer 2</option>
+              <option value="layer-3">Layer 3</option>
+            </select>
+          </aside>
+          <aside class="actions">
+            <form action="">
+              <form-group>
+                <label for="lat">Latitude</label>
+                <input
+                  type="number"
+                  name="lat"
+                  id="lat"
+                  step="0.000001"
+                  min="-180"
+                  max="180"
+                  required
+                >
+              </form-group>
+              <form-group>
+                <label for="long">Longitude</label>
+                <input
+                  type="number"
+                  name="long"
+                  id="long"
+                  step="0.000001"
+                  min="0"
+                  max="360"
+                  required
+                >
+              </form-group>
+              <button type="submit">Guess!</button>
+            </form>
+          </aside>
+        </div>
       </div>
 
-      <div class="end">
-        <aside class="layers">
-          <select name="layer" id="layer">
-            <option value="layer-1">Layer 1</option>
-            <option value="layer-2">Layer 2</option>
-            <option value="layer-3">Layer 3</option>
-          </select>
-        </aside>
-        <aside class="actions">
-          <form action="">
-            <form-group>
-              <label for="lat">Latitude</label>
-              <input
-                type="number"
-                name="lat"
-                id="lat"
-                step="0.000001"
-                min="-180"
-                max="180"
-                required
-              >
-            </form-group>
-            <form-group>
-              <label for="long">Longitude</label>
-              <input
-                type="number"
-                name="long"
-                id="long"
-                step="0.000001"
-                min="0"
-                max="360"
-                required
-              >
-            </form-group>
-            <button type="submit">Guess!</button>
-          </form>
-        </aside>
-      </div>
-    </div>
+      <div id="map"></div>
+    </main>
 
     <dialog id="settings" class="settings">
       <h1>Paramètres</h1>
@@ -157,12 +171,28 @@
       <button command="request-close" commandfor="settings">Fermer</button>
 
       <p>
-        I am a text paragraph <tabler-icon name="plus"></tabler-icon>... with an
-        icon
+        I am a text paragraph <ui-icon name="plus"></ui-icon>... with an icon
       </p>
     </dialog>
 
-    <div id="map"></div>
+    <template id="template-ui-icon">
+      <style>
+      @import url("components/ui-icon/ui-icon.css");
+      </style>
+      <svg></svg>
+    </template>
+
+    <template id="template-data-scale">
+      <style>
+      @import url("components/data-scale/data-scale.css");
+      </style>
+
+      <div class="container">
+        <p>
+          <slot></slot>
+        </p>
+      </div>
+    </template>
 
     <script type="module" src="./index.js"></script>
   </body>

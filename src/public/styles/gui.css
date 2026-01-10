@@ -7,14 +7,16 @@
   align-content: space-between;
   pointer-events: none;
 
+  button,
+  select,
+  form-group {
+    pointer-events: auto;
+  }
+
   .start,
   .end {
     display: flex;
     justify-content: space-between;
-  }
-
-  aside {
-    pointer-events: auto;
   }
 
   .start {
@@ -31,13 +33,9 @@
 }
 
 aside.metadata {
+  pointer-events: auto;
   background-color: var(--color-primary);
   padding: 1rem;
-
-  dl {
-    display: grid;
-    gap: 1rem;
-  }
 
   data {
     font-variant-numeric: tabular-nums;
