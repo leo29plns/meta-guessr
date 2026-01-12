@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
-<head>
+<html lang="fr" dir="ltr" data-mode>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document 1</title>
+    <title>DataGuessr</title>
+
+    <script>
+    (() => {
+      const stored = localStorage.getItem('mode');
+      const system = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+
+      const mode = stored === 'dark' || stored === 'light' ? stored : system;
+
+      document.documentElement.dataset.mode = mode;
+    })();
+    </script>
 
     <link rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="./libraries/leaflet/leaflet.css">
+
+    <link rel="preconnect" href="https://tile.openstreetmap.org">
 
     <script type="importmap">
     {
-        "imports": {
-            "@/": "./",
-            "leaflet": "./libraries/leaflet/leaflet-src.esm.js"
-        }
+      "imports": {
+        "@/": "./",
+        "leaflet": "./libraries/leaflet/leaflet-src.esm.js"
+      }
     }
     </script>
 
@@ -36,36 +50,158 @@
     <meta property="twitter:title" content="">
     <meta property="twitter:description" content="">
     <meta property="twitter:image" content="">
-</head>
-<body>
-    <aside class="overlay gui icon">
-        <img src="./assets/icons/train_p.svg" alt="">
-    </aside>
+  </head>
+  <body>
+    <main>
+      <div class="gui">
+        <div class="start">
+          <aside class="metadata">
+            <h1>map: metadata</h1>
+            <ul>
+              <li>
+                <p>Densité démographique</p>
+                <data-group>
+                  <data value="3500">3 500</data>pers/km²
+                </data-group>
+              </li>
+              <li>
+                <p>Superficie</p>
+                <data-group>
+                  <data value="54321">54 321</data>km²
+                </data-group>
+              </li>
+              <li>
+                <p>Population totale</p>
+                <data-group>
+                  <data value="12000000">12 000 000</data>hab.
+                  <data-scale>DATA</data-scale>
+                </data-group>
+              </li>
+            </ul>
+          </aside>
+          <aside class="controls">
+            <div class="settings">
+              <button
+                type="button"
+                commandfor="settings"
+                command="show-modal"
+                aria-label="Ouvrir les paramètres"
+              >
+                <ui-icon name="settings"></ui-icon>
+              </button>
+            </div>
+            <div class="zoom">
+              <button
+                type="button"
+                id="zoom-in"
+                class="button"
+                aria-label="Faire un zoom avant"
+              >
+                <ui-icon name="plus"></ui-icon>
+              </button>
+              <button
+                type="button"
+                id="zoom-out"
+                class="button"
+                aria-label="Faire un zoom arrière"
+              >
+                <ui-icon name="minus"></ui-icon>
+              </button>
+            </div>
+          </aside>
+        </div>
+        <div class="end">
+          <aside class="layers">
+            <select name="layer" id="layer">
+              <option value="layer-1">Layer 1</option>
+              <option value="layer-2">Layer 2</option>
+              <option value="layer-3">Layer 3</option>
+            </select>
+          </aside>
+          <aside class="actions">
+            <form action="">
+              <form-group>
+                <label for="lat">Latitude</label>
+                <input
+                  type="number"
+                  name="lat"
+                  id="lat"
+                  step="0.000001"
+                  min="-180"
+                  max="180"
+                  required
+                >
+              </form-group>
+              <form-group>
+                <label for="long">Longitude</label>
+                <input
+                  type="number"
+                  name="long"
+                  id="long"
+                  step="0.000001"
+                  min="0"
+                  max="360"
+                  required
+                >
+              </form-group>
+              <button type="submit">Guess!</button>
+            </form>
+          </aside>
+        </div>
+      </div>
 
-    <aside class="overlay gui menu">
-        <form action="">
-            <form-group>
-                <label for="date">Date</label>
-                <input type="date" name="" id="date">
-            </form-group>
+      <div id="map"></div>
+    </main>
 
-            <form-group>
-                <label for="time">Horaire</label>
-                <input type="time" name="" id="time">
-            </form-group>
+    <dialog id="settings" class="settings">
+      <h1>Paramètres</h1>
+      <fieldset>
+        <legend>Mode de couleur :</legend>
 
-            <form-group>
-                <label for="code">Code mission</label>
-                <select name="" id="code">
-                    <option value="">PICI 113640</option>
-                    <option value="">MICI 113631</option>
-                </select>
-            </form-group>
-        </form>
-    </aside>
+        <form-group>
+          <input type="radio" id="light" name="mode" value="light" checked>
+          <label for="light">Light</label>
+        </form-group>
 
-    <div id="map"></div>
+        <form-group>
+          <input type="radio" id="dark" name="mode" value="dark">
+          <label for="dark">Dark</label>
+        </form-group>
+
+        <form-group>
+          <input type="radio" id="system" name="mode" value="system">
+          <label for="system">Système</label>
+        </form-group>
+      </fieldset>
+
+      <button
+        command="request-close"
+        commandfor="settings"
+        aria-label="Fermer les paramètres"
+      >
+        <ui-icon name="x"></ui-icon>
+      </button>
+    </dialog>
+
+    <template id="template-ui-icon">
+      <style>
+      @import url("components/ui-icon/ui-icon.css");
+      </style>
+      <svg></svg>
+    </template>
+
+    <template id="template-data-scale">
+      <style>
+      @import url("components/data-scale/data-scale.css");
+      </style>
+
+      <div class="container">
+        <p>
+          <slot></slot>
+        </p>
+      </div>
+    </template>
 
     <script type="module" src="./index.js"></script>
-</body>
+  </body>
 </html>

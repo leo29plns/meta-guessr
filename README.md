@@ -1,4 +1,4 @@
-# MetaGuessr
+# DataGuessr
 
 ## Prerequisites
 
@@ -15,8 +15,8 @@ This project requires the following tools to be installed on your system:
 Clone the repository, then install dependencies:
 
 ```bash
-git clone git@github.com:leo29plns/meta-guessr.git
-cd meta-guessr
+git clone git@github.com:leo29plns/data-guessr.git
+cd data-guessr
 pnpm install
 ```
 

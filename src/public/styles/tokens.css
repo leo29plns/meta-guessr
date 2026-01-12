@@ -1,0 +1,19 @@
+:root {
+  --button-border-radius: 0.25rem;
+
+  --color-base: oklch(0.1776 0 0);
+  --color-info: oklch(60.769% 0.17124 274.512);
+  --color-success: oklch(80.683% 0.1808 146.289);
+  --color-warning: oklch(74.728% 0.13038 56.415);
+  --color-error: oklch(61.507% 0.20769 25.768);
+
+  --color-primary: oklch(1 0 1);
+  --color-primary-hover: oklch(0.9 0 1);
+  --color-on-primary: oklch(from var(--color-base) l c h / 1);
+}
+
+[data-mode="dark"] {
+  --color-primary: oklch(0.1776 0 0);
+  --color-primary-hover: oklch(0.3776 0 0);
+  --color-on-primary: oklch(1 0 1);
+}

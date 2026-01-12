@@ -1,27 +1,78 @@
+/** biome-ignore-all lint/correctness/noUnknownTypeSelector: view transitions */
+:root {
+  color-scheme: light;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+
+[data-mode="light"] {
+  color-scheme: light;
+}
+
+[data-mode="dark"] {
+  color-scheme: dark;
+}
+
 html,
 body {
-	--body-padding: 1.5rem;
+  transition: all 125ms ease;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  font-family: sans-serif;
 
-	transition: all 125ms ease;
-	overflow-wrap: break-word;
-	text-rendering: optimizeLegibility;
-	font-family: sans-serif;
+  min-height: 100dvh;
+  display: grid;
 
-	min-height: 100dvh;
-	display: grid;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+main {
+  display: grid;
+  position: relative;
+}
+
+form,
+form-group {
+  display: grid;
 }
 
 form-group {
-	display: grid;
+  &:has(input[type="radio"]) {
+    display: flex;
+    gap: 0.4rem;
+  }
 }
 
-aside.overlay {
-	position: absolute;
-	z-index: 999;
+dialog {
+  border: none;
+
+  &::backdrop {
+    background-color: oklch(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+  }
 }
 
-@media print {
-	.gui {
-		display: none;
-	}
+.button {
+  border: 0;
+  padding: 0.5rem;
+  background-color: var(--color-primary);
+  border-radius: var(--button-border-radius);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: 500ms;
+  animation-timing-function: ease;
+}
+
+::view-transition-old(*):only-child,
+::view-transition-new(*):only-child,
+::view-transition-group(root) {
+  animation-duration: 0ms;
 }
