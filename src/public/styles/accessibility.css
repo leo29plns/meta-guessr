@@ -17,7 +17,7 @@
   --color-a11y-skip-content-outline: var(--a11y-400);
 }
 
-[data-theme="dark"] {
+[data-mode="dark"] {
   /* Primitives */
   --a11y-50: #eff6ff;
   --a11y-100: #c7deff;
