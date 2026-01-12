@@ -1,0 +1,10 @@
+@import url("styles/reset.css") layer(reset);
+@import url("styles/loading.css") layer(loading);
+@import url("styles/tokens.css") layer(tokens);
+@import url("styles/accessibility.css") layer(accessibility);
+@import url("styles/main.css") layer(main);
+@import url("styles/libraries.css") layer(libraries);
+@import url("styles/map.css") layer(map);
+@import url("styles/gui.css") layer(gui);
+
+@layer reset, loading, tokens, accessibility, main, libraries, map, gui;

@@ -1,0 +1,89 @@
+.gui {
+  position: absolute;
+  z-index: 999;
+  inset: 0;
+  display: grid;
+  padding: 3rem;
+  align-content: space-between;
+  pointer-events: none;
+
+  button,
+  select,
+  form-group {
+    pointer-events: auto;
+  }
+
+  .start,
+  .end {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .start {
+    align-items: start;
+  }
+
+  .end {
+    align-items: end;
+  }
+
+  @media print {
+    display: none;
+  }
+}
+
+aside.metadata {
+  pointer-events: auto;
+  background-color: var(--color-primary);
+  padding: 1rem;
+
+  data {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+aside.controls {
+  display: flex;
+  gap: 1rem;
+
+  .zoom {
+    display: grid;
+    background-color: var(--color-on-primary);
+    gap: 0.125rem;
+    border-radius: var(--button-border-radius);
+
+    button {
+      padding: 0.25rem;
+
+      ui-icon {
+        display: block;
+      }
+
+      &:first-child {
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+      }
+
+      &:last-child {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
+      }
+    }
+  }
+}
+
+aside.actions {
+  form {
+    gap: 1rem;
+  }
+}
+
+dialog.settings {
+  gap: 1rem;
+  justify-items: start;
+
+  &[open] {
+    display: grid;
+  }
+}

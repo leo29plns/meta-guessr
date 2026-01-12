@@ -1,3 +1,3 @@
 {
-	"recommendations": ["biomejs.biome", "waderyan.gitblame"]
+  "recommendations": ["biomejs.biome", "waderyan.gitblame", "vitest.explorer"]
 }
