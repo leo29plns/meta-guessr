@@ -1,4 +1,5 @@
 import { ICONS_PATH } from './consts.js';
+import css from './ui-icon.css' with { type: 'css' };
 
 /** @type {Map<string, HTMLTemplateElement>} */
 const iconCache = new Map();
@@ -20,6 +21,7 @@ export class UiIcon extends HTMLElement {
     if (!template) return;
 
     this.#root.appendChild(template.content.cloneNode(true));
+    this.#root.adoptedStyleSheets = [css];
   }
 
   /**

@@ -1,1 +1,1 @@
-export const ICONS_PATH = '/libraries/tabler';
+export const ICONS_PATH = 'libraries/tabler';
