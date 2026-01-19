@@ -1,22 +1,26 @@
 import { GeoMap } from '@/scripts/classes/GeoMap/GeoMap.js';
-import { Mode } from '@/scripts/classes/Mode/Mode.js';
+import { ModeManager } from '@/scripts/classes/ModeManager/ModeManager.js';
+import { Game } from './classes/Game/Game.js';
 
 export class App {
-  /**
-   * @type {Mode}
-   */
+  /** @type {ModeManager} */
   #mode;
-  /**
-   * @type {GeoMap}
-   */
+
+  /** @type {GeoMap} */
   #geoMap;
 
+  /** @type {Game} */
+  #game;
+
   constructor() {
-    this.#mode = new Mode();
+    this.#mode = new ModeManager();
     this.#geoMap = new GeoMap();
+    this.#game = new Game();
 
     this.#setupZoomControls();
     this.#setupModeControls();
+
+    console.log(this.#mode, this.#geoMap, this.#game);
   }
 
   #setupZoomControls() {
@@ -38,7 +42,7 @@ export class App {
 
       input.addEventListener('change', (_) => {
         this.#mode.setMode(
-          /** @type {import('./classes/Mode/consts').SelectableMode} */ (
+          /** @type {import('./classes/ModeManager/consts.js').SelectableMode} */ (
             input.value
           ),
         );
