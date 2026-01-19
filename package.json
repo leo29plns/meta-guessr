@@ -11,7 +11,7 @@
     "check": "pnpm exec biome check && pnpm run type-check",
     "check:fix": "pnpm exec biome check --write",
     "test": "vitest run",
-    "dev": "pnpm exec live-server ./src/public",
+    "dev": "pnpm exec browser-sync start --server 'src/public' --files 'src/public' --no-ui --no-notify",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -22,16 +22,20 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@10.28.1",
+  "engines": {
+    "node": "24.12.0"
+  },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
+    "@biomejs/biome": "^2.3.11",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@types/geojson": "^7946.0.16",
     "@types/leaflet": "^1.9.21",
+    "browser-sync": "^3.0.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "live-server": "^1.2.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   }
 }

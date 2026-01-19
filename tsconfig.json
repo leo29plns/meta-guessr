@@ -8,6 +8,7 @@
     "noImplicitAny": true,
 
     "target": "es2023",
+    "module": "esnext",
     "moduleResolution": "Bundler",
 
     "baseUrl": ".",
@@ -17,6 +18,6 @@
 
     "skipLibCheck": true
   },
-  "include": ["**/*.js"],
+  "include": ["**/*.js", "**/*.d.ts"],
   "exclude": ["node_modules", "src/public/libraries", "src/tests"]
 }

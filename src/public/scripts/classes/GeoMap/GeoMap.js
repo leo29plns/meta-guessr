@@ -1,9 +1,7 @@
 import { Map as LeafletMap, TileLayer } from 'leaflet';
 
 export class GeoMap {
-  /**
-   * @type {LeafletMap}
-   */
+  /** @type {LeafletMap} */
   #map;
 
   /**
