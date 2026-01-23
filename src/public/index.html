@@ -51,6 +51,7 @@
     <meta property="twitter:description" content="">
     <meta property="twitter:image" content="">
   </head>
+
   <body>
     <main>
       <div class="gui">
@@ -112,11 +113,66 @@
         </div>
         <div class="end">
           <aside class="layers">
-            <select name="layer" id="layer">
-              <option value="layer-1">Layer 1</option>
-              <option value="layer-2">Layer 2</option>
-              <option value="layer-3">Layer 3</option>
-            </select>
+            <fieldset>
+              <legend class="visually-hidden">Couches de données</legend>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-towns"
+                  name="layers"
+                  value="towns"
+                  checked
+                >
+                <label for="layer-towns">Communes</label>
+              </form-group>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-roads"
+                  name="layers"
+                  value="roads"
+                  checked
+                >
+                <label for="layer-roads">Routes</label>
+              </form-group>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-monuments"
+                  name="layers"
+                  value="monuments"
+                  checked
+                >
+                <label for="layer-monuments">Monuments</label>
+              </form-group>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-noise"
+                  name="layers"
+                  value="noise"
+                >
+                <label for="layer-noise">Bruit</label>
+              </form-group>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-pollution"
+                  name="layers"
+                  value="pollution"
+                >
+                <label for="layer-pollution">Pollution</label>
+              </form-group>
+              <form-group>
+                <input
+                  type="checkbox"
+                  id="layer-bus-stops"
+                  name="layers"
+                  value="busStops"
+                >
+                <label for="layer-bus-stops">Arrêts de bus</label>
+              </form-group>
+            </fieldset>
           </aside>
           <aside class="actions">
             <form action="">

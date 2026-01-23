@@ -19,6 +19,7 @@ export class App {
 
     this.#setupZoomControls();
     this.#setupModeControls();
+    this.#setupLayerControls();
 
     console.log(this.#mode, this.#geoMap, this.#game);
   }
@@ -46,6 +47,58 @@ export class App {
             input.value
           ),
         );
+      });
+    });
+  }
+
+  #setupLayerControls() {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const layerCheckboxes = document.querySelectorAll('input[name="layers"]');
+
+    /** @type {Record<string, { show: () => void; hide: () => void }>} */
+    const layerActions = {
+      towns: {
+        show: () => this.#geoMap.showTowns(),
+        hide: () => this.#geoMap.hideTowns(),
+      },
+      roads: {
+        show: () => this.#geoMap.showRoads(),
+        hide: () => this.#geoMap.hideRoads(),
+      },
+      monuments: {
+        show: () => this.#geoMap.showMonuments(),
+        hide: () => this.#geoMap.hideMonuments(),
+      },
+      noise: {
+        show: () => this.#geoMap.showNoise(),
+        hide: () => this.#geoMap.hideNoise(),
+      },
+      pollution: {
+        show: () => this.#geoMap.showPollution(),
+        hide: () => this.#geoMap.hidePollution(),
+      },
+      busStops: {
+        show: () => this.#geoMap.showBusStops(),
+        hide: () => this.#geoMap.hideBusStops(),
+      },
+    };
+
+    layerCheckboxes.forEach((checkbox) => {
+      const actions = layerActions[checkbox.value];
+      if (!actions) return;
+
+      // Apply initial state
+      if (checkbox.checked) {
+        actions.show();
+      }
+
+      // Listen for changes
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          actions.show();
+        } else {
+          actions.hide();
+        }
       });
     });
   }
