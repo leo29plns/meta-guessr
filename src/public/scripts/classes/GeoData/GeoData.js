@@ -1,7 +1,7 @@
 import geodata from '@/data/geodata.geojson' with { type: 'json' };
 
 /**
- * @import { GeoDataCollection, GeoDataFeature } from 'src/types/geodata'
+ * @import { GeoDataCollection, GeoDataFeature } from 'src/types/data/geodata'
  */
 
 export class GeoData {

@@ -1,9 +1,10 @@
-/**
- * @import { GeoDataFeature } from 'src/types/geodata'
- * @import { Coordinates } from 'src/types/coordinates'
- */
 import { haversineDistance } from '@/scripts/utils/haversineDistance';
-import { MAX_SCORE, SCORE_SCALE } from './consts.js';
+import { MAX_SCORE, MAX_SCORE_RADIUS, SCORE_SCALE } from './consts.js';
+
+/**
+ * @import { GeoDataFeature } from 'src/types/data/geodata.js'
+ * @import { Coordinates } from 'src/types/coordinates.js'
+ */
 
 export class GameRound {
   /** @type {GeoDataFeature} */
@@ -51,16 +52,16 @@ export class GameRound {
    * Updates internal state solely.
    *
    * @param {number} lat
-   * @param {number} long
+   * @param {number} lng
    * @returns {void}
    */
-  submitGuess(lat, long) {
+  submitGuess(lat, lng) {
     const [targetLng, targetLat] = this.#poi.geometry.coordinates;
-    const distance = haversineDistance(lat, long, targetLat, targetLng);
+    const distance = haversineDistance(lat, lng, targetLat, targetLng);
 
     this.#target = [targetLng, targetLat];
 
-    this.#guess = { lat, long };
+    this.#guess = { lat, lng };
 
     this.#distance = distance;
     this.#score = this.#calculateScore(distance);
@@ -72,7 +73,7 @@ export class GameRound {
    * @returns {number} 0-5000
    */
   #calculateScore(distance) {
-    if (distance < 25) return MAX_SCORE;
+    if (distance < MAX_SCORE_RADIUS) return MAX_SCORE;
 
     return Math.round(
       Math.max(0, MAX_SCORE * Math.exp(-distance / SCORE_SCALE)),

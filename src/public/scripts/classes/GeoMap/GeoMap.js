@@ -1,4 +1,8 @@
-import { Map as LeafletMap, TileLayer } from 'leaflet';
+import { Map as LeafletMap, latLngBounds, TileLayer } from 'leaflet';
+
+/**
+ * @import { Bounds, Coordinates } from 'src/types/coordinates'
+ */
 
 export class GeoMap {
   /** @type {LeafletMap} */
@@ -6,12 +10,20 @@ export class GeoMap {
 
   /**
    * @param {string} [containerId]
-   * @param {[number, number]} [center]
+   * @param {Coordinates} [center]
    * @param {number} [zoom]
+   * @param {Bounds} [maxBounds]
    */
-  constructor(containerId = 'map', center = [48.709167, 2.504722], zoom = 9) {
+  constructor(
+    containerId = 'map',
+    center = { lat: 48.709167, lng: 2.504722 },
+    zoom = 9,
+    maxBounds,
+  ) {
     this.#map = new LeafletMap(containerId, {
       zoomControl: false,
+      maxBounds:
+        maxBounds && latLngBounds(maxBounds.southWest, maxBounds.northEast),
     }).setView(center, zoom);
 
     new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
