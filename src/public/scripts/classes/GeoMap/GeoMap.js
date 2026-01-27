@@ -1,7 +1,8 @@
-import { Map as LeafletMap, latLngBounds, TileLayer } from 'leaflet';
+import { Map as LeafletMap, latLngBounds, marker, TileLayer } from 'leaflet';
 import { Module } from '../Module/Module.js';
 
 /**
+ * @import { Marker } from 'leaflet'
  * @import { Bounds, Coordinates } from 'src/types/coordinates'
  * @import { Bus } from '@/scripts/classes/Bus/Bus.js'
  */
@@ -9,6 +10,12 @@ import { Module } from '../Module/Module.js';
 export class GeoMap extends Module {
   /** @type {LeafletMap} */
   #map;
+
+  /** @type {Marker | null} */
+  #pointer = null;
+
+  /** @type {Coordinates | null} */
+  #pointerCoordinates = null;
 
   /**
    * @param {Bus} bus
@@ -31,6 +38,13 @@ export class GeoMap extends Module {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
+
+    this.#setupClickEvent();
+    this.setupListeners();
+  }
+
+  setupListeners() {
+    this.bus.on('round:started', () => this.removePointer());
   }
 
   zoomIn() {
@@ -39,5 +53,41 @@ export class GeoMap extends Module {
 
   zoomOut() {
     this.#map.setZoom(this.#map.getZoom() - 1);
+  }
+
+  #setupClickEvent() {
+    this.#map.on('click', (e) => {
+      this.#pointerCoordinates = e.latlng;
+      this.movePointer(e.latlng);
+
+      this.bus.emit('map:moved-pointer', this);
+    });
+  }
+
+  /**
+   * @param {Coordinates} coords
+   */
+  movePointer(coords) {
+    if (!this.#pointer) {
+      this.#pointer = marker([coords.lat, coords.lng]).addTo(this.#map);
+    } else {
+      this.#pointer.setLatLng(coords);
+    }
+  }
+
+  removePointer() {
+    if (!this.#pointer) return;
+
+    this.#pointer.remove();
+    this.#pointer = null;
+    this.#pointerCoordinates = null;
+  }
+
+  get pointerCoordinates() {
+    if (!this.#pointerCoordinates) {
+      throw new Error('No pointer coordinates');
+    }
+
+    return this.#pointerCoordinates;
   }
 }

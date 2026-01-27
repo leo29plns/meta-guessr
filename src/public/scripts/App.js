@@ -5,6 +5,7 @@ import { GameScoreManager } from './classes/DialogManager/GameScoreManager.js';
 import { RoundScoreManager } from './classes/DialogManager/RoundScoreManager.js';
 import { Game } from './classes/Game/Game.js';
 import { GuessManager } from './classes/GuessManager/GuessManager.js';
+import { MapMetadataManager } from './classes/MapMetadataManager/MapMetadataManager.js';
 
 /**
  * @import { SelectableMode } from '@/scripts/classes/ModeManager/consts.js'
@@ -36,6 +37,10 @@ export class App {
   // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
   #gameScoreManager;
 
+  /** @type {MapMetadataManager} */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
+  #mapMetadataManager;
+
   constructor() {
     const idfCenter = { lat: 48.709167, lng: 2.504722 };
     const idfBoundings = {
@@ -51,11 +56,12 @@ export class App {
 
     this.#bus = new Bus();
     this.#mode = new ModeManager();
-    this.#game = new Game(this.#bus);
+    this.#mapMetadataManager = new MapMetadataManager(this.#bus, 'metadata');
     this.#geoMap = new GeoMap(this.#bus, 'map', idfCenter, 10, 9, idfBoundings);
     this.#guessManager = new GuessManager(this.#bus, 'guess');
     this.#roundScoreManager = new RoundScoreManager(this.#bus, 'round-score');
     this.#gameScoreManager = new GameScoreManager(this.#bus, 'game-score');
+    this.#game = new Game(this.#bus);
 
     this.#setupZoomControls();
     this.#setupModeControls();

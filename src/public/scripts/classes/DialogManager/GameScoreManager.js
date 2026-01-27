@@ -16,7 +16,8 @@ export class GameScoreManager extends DialogManager {
   }
 
   setupListeners() {
-    this.bus.on('game:ended', (_) => {
+    this.bus.on('game:ended', (game) => {
+      console.log('Game ended. Total score :', game.totalScore);
       this.show();
     });
 

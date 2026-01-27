@@ -17,6 +17,9 @@ export class Module {
     this.#bus = bus;
   }
 
+  /**
+   * Method where to set all `this.bus.on` events.
+   */
   setupListeners() {}
 
   get bus() {

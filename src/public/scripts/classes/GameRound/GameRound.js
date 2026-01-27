@@ -37,6 +37,7 @@ export class GameRound extends Module {
 
   start() {
     this.#status = STATUSES.IN_PROGRESS;
+    this.bus.emit('round:started', this);
   }
 
   /** @param {Coordinates} coordinates */
@@ -76,7 +77,7 @@ export class GameRound extends Module {
   }
 
   get status() {
-    return this.#score ? STATUSES.COMPLETED : this.#status;
+    return this.#status;
   }
 
   get score() {

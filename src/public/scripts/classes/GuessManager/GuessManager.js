@@ -1,19 +1,17 @@
 import { Module } from '../Module/Module.js';
 
 /**
+ * @import { GuessFormHTML } from 'src/types/guess-form.js'
  * @import { Bus } from '@/scripts/classes/Bus/Bus.js'
  * @import { Coordinates } from 'src/types/coordinates.js'
  */
 
 export class GuessManager extends Module {
-  /** @type {HTMLFormElement} */
+  /** @type {GuessFormHTML} */
   #form;
 
-  /** @type {HTMLInputElement} */
-  #latInput;
-
-  /** @type {HTMLInputElement} */
-  #lngInput;
+  /** @type {Coordinates | null} */
+  #coordinates = null;
 
   /**
    * @param {Bus} bus
@@ -22,25 +20,23 @@ export class GuessManager extends Module {
   constructor(bus, formId) {
     super(bus);
 
-    this.setupListeners();
-
     const form = document.getElementById(formId);
-    const latInput = document.getElementById('lat');
-    const lngInput = document.getElementById('lng');
 
-    if (!form || !latInput || !lngInput) {
+    if (!form) {
       throw new Error('Form element not found.');
     }
 
-    this.#form = /** @type {HTMLFormElement} */ (form);
-    this.#latInput = /** @type {HTMLInputElement} */ (latInput);
-    this.#lngInput = /** @type {HTMLInputElement} */ (lngInput);
+    this.#form = /** @type {GuessFormHTML} */ (form);
 
     this.#attachForm();
+    this.setupListeners();
   }
 
   setupListeners() {
     this.bus.on('round:ended', () => this.#form.reset());
+    this.bus.on('map:moved-pointer', (geoMap) =>
+      this.updateCoordinates(geoMap.pointerCoordinates),
+    );
   }
 
   #attachForm() {
@@ -49,13 +45,28 @@ export class GuessManager extends Module {
 
       const data = new FormData(this.#form);
 
-      /** @type {Coordinates} */
-      const coords = {
+      this.#coordinates = {
         lat: Number(data.get('lat')),
         lng: Number(data.get('lng')),
       };
 
-      this.bus.emit('guess:submitted', coords);
+      this.bus.emit('guess:submitted', this);
     });
+  }
+
+  /**
+   * @param {Coordinates} coordinates
+   */
+  updateCoordinates(coordinates) {
+    this.#form.elements.lat.value = coordinates.lat.toFixed(6);
+    this.#form.elements.lng.value = coordinates.lng.toFixed(6);
+  }
+
+  get coordinates() {
+    if (!this.#coordinates) {
+      throw new Error('No coordinates found.');
+    }
+
+    return this.#coordinates;
   }
 }

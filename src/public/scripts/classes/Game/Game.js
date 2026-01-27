@@ -18,24 +18,26 @@ export class Game extends Module {
   /** @param {Bus} bus */
   constructor(bus) {
     super(bus);
-    this.setupListeners();
 
     this.#geoData = new GeoData();
 
     this.createRounds(6);
     this.startNextRound();
+    this.setupListeners();
   }
 
   setupListeners() {
-    this.bus.on('guess:submitted', (data) => this.handleGuess(data));
-    this.bus.on('round:started', () => this.startNextRound());
+    this.bus.on('guess:submitted', (guessManager) =>
+      this.handleGuess(guessManager.coordinates),
+    );
+    this.bus.on('dialog:next-round', () => this.startNextRound());
   }
 
   startNextRound() {
     const nextRound = this.#nextRound;
 
     if (!nextRound) {
-      this.bus.emit('game:ended');
+      this.bus.emit('game:ended', this);
       return;
     }
 

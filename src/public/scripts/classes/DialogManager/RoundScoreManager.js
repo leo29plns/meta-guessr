@@ -16,16 +16,14 @@ export class RoundScoreManager extends DialogManager {
   }
 
   setupListeners() {
-    this.bus.on('round:ended', (_) => {
-      this.#updateUI();
+    this.bus.on('round:ended', (gameRound) => {
+      console.log('Round ended. Score :', gameRound.score);
       this.show();
     });
 
     this.nextBtn.addEventListener('click', () => {
       this.close();
-      this.bus.emit('round:started');
+      this.bus.emit('dialog:next-round');
     });
   }
-
-  #updateUI() {}
 }
