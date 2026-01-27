@@ -9,9 +9,7 @@ import {
 
 import geoData from '@/data/geodata.geojson' with { type: 'json' };
 import monumentsGeoData from '@/data/monuments.geojson' with { type: 'json' };
-import roadsGeoData from '@/data/roads_essentials_2.geojson' with {
-  type: 'json',
-};
+import roadsGeoData from '@/data/roads.geojson' with { type: 'json' };
 import sonAirGeoData from '@/data/son_air3.geojson' with { type: 'json' };
 import townsGeoData from '@/data/towns.geojson' with { type: 'json' };
 
@@ -63,7 +61,6 @@ function getCellBounds(lat, lng) {
 
 /**
  * Gets a color and opacity based on a value from 1-3 (1=cool/green, 3=hot/red).
- * Low values (green) are nearly transparent, high values (red) are more visible.
  * @param {number} value - Value between 1 and 3
  * @returns {{ color: string, opacity: number }}
  */
@@ -71,8 +68,8 @@ function getHeatStyle(value) {
   // Normalize value to 0-1 range
   const normalized = Math.max(0, Math.min(1, (value - 1) / 2));
 
-  // Opacity: 0.05 at value 1, up to 0.7 at value 3
-  const opacity = 0.05 + normalized * 0.65;
+  // Opacity: 0.4 at value 1, up to 0.85 at value 3
+  const opacity = 0.4 + normalized * 0.45;
 
   let color;
   // Gradient from green (1) -> yellow (2) -> red (3)
@@ -93,11 +90,22 @@ function getHeatStyle(value) {
   return { color, opacity };
 }
 
+/**
+ * Gets a qualitative label for a value from 1-3.
+ * @param {number} value - Value between 1 and 3
+ * @returns {string}
+ */
+function getQualityLabel(value) {
+  if (value <= 1.5) return 'Correct';
+  if (value <= 2.5) return 'Dégradé';
+  return 'Horrible';
+}
+
 /** @type {Record<string, PathOptions>} */
 const ROAD_STYLES = {
-  primary: { color: '#e74c3c', weight: 4, opacity: 0.9 },
-  secondary: { color: '#e67e22', weight: 3, opacity: 0.8 },
-  tertiary: { color: '#f1c40f', weight: 2, opacity: 0.7 },
+  pri: { color: '#e74c3c', weight: 4, opacity: 0.9 },
+  sec: { color: '#e67e22', weight: 3, opacity: 0.8 },
+  ter: { color: '#f1c40f', weight: 2, opacity: 0.7 },
   default: { color: '#3498db', weight: 1.5, opacity: 0.6 },
 };
 
@@ -117,6 +125,41 @@ const TOWN_HOVER_STYLE = {
   fillColor: '#40916c',
   fillOpacity: 0.7,
 };
+
+/** Housing price thresholds for color scale (€/m²) */
+const HOUSING_PRICE_MIN = 1500;
+const HOUSING_PRICE_MAX = 6000;
+
+/**
+ * Gets a color based on housing price per m².
+ * Green = cheap, Yellow = medium, Red = expensive.
+ * @param {number} price - Price per m² in euros
+ * @returns {string} RGB color string
+ */
+function getHousingPriceColor(price) {
+  const normalized = Math.max(
+    0,
+    Math.min(
+      1,
+      (price - HOUSING_PRICE_MIN) / (HOUSING_PRICE_MAX - HOUSING_PRICE_MIN),
+    ),
+  );
+
+  let r, g, b;
+  if (normalized <= 0.5) {
+    // Green to Yellow
+    r = Math.round(255 * (normalized * 2));
+    g = 200;
+    b = 50;
+  } else {
+    // Yellow to Red
+    r = 255;
+    g = Math.round(200 * (1 - (normalized - 0.5) * 2));
+    b = 50;
+  }
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 /** @type {import('leaflet').CircleMarkerOptions} */
 const MONUMENT_STYLE = {
@@ -174,6 +217,9 @@ export class GeoMap {
 
   /** @type {GeoJSON | null} */
   #busStopsLayer = null;
+
+  /** @type {GeoJSON | null} */
+  #housingLayer = null;
 
   /**
    * @param {string} [containerId]
@@ -245,7 +291,10 @@ export class GeoMap {
               ? `<strong>${name}</strong><br>${ref}`
               : `<strong>${name}</strong>`
             : `<strong>${ref}</strong>`;
-          layer.bindPopup(content);
+          layer.bindTooltip(content, {
+            direction: 'top',
+            sticky: true,
+          });
         }
       },
     });
@@ -297,33 +346,28 @@ export class GeoMap {
             feature.properties
           );
         const tooltipContent = `
-          <strong>${props.nom_officiel_commune_arrondissement_municipal}</strong><br>
-          Code INSEE : ${props.codgeo}<br>
-          Population (2020) : ${props['Population 2020'].toLocaleString()}<br>
-          Superficie : ${props.Superficie} km²<br>
-          Densité : ${(props['Population 2020'] / props.Superficie).toFixed(2)} habitants/km²<br>
-          Naissances (2022) : ${props['Naissance 2022']}<br>
-          Décès (2022) : ${props['Deces 2022']}<br>
-          Revenu médian (2020) : ${parseInt(props['Revenus median 2020'], 10).toLocaleString()} €
+          <strong>${props.nom}</strong><br>
+          Code INSEE : ${props.insee}<br>
+          Population (2020) : ${props.pop2020.toLocaleString()}<br>
+          Superficie : ${props.superfic} km²<br>
+          Densité : ${(props.pop2020 / props.superfic).toFixed(2)} habitants/km²<br>
+          Naissances (2022) : ${props.naiss2022}<br>
+          Décès (2020) : ${props.deces2020}<br>
+          Revenu médian (2020) : ${props.revMed2020} €
         `;
-
-        // Use the town's geo_point as the tooltip anchor
-        const townCenter = /** @type {import('leaflet').LatLngExpression} */ ([
-          props.geo_point.lat,
-          props.geo_point.lon,
-        ]);
 
         layer.bindTooltip(tooltipContent, {
           direction: 'top',
           permanent: false,
           offset: [0, -10],
+          sticky: true,
+          className: 'map-tooltip',
         });
 
         layer.on('mouseover', () => {
           /** @type {import('leaflet').Path} */ (layer).setStyle(
             TOWN_HOVER_STYLE,
           );
-          layer.getTooltip()?.setLatLng(townCenter);
         });
 
         layer.on('mouseout', () => {
@@ -363,6 +407,107 @@ export class GeoMap {
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
+  // Housing Prices Layer
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Displays the housing prices layer on the map.
+   * Colors each town based on average price per m².
+   * If already visible, this method does nothing.
+   */
+  showHousing() {
+    if (this.#housingLayer) return;
+
+    this.#housingLayer = new GeoJSON(this.#townsGeoData, {
+      style: (feature) => {
+        const props =
+          /** @type {import('src/types/towns').GeoDataTownsProperties} */ (
+            feature?.properties
+          );
+        const price = props?.Prixm2Moyen ?? 0;
+        const hasData = price > 0;
+        return {
+          color: '#333',
+          weight: 1,
+          opacity: 1,
+          fillColor: hasData ? getHousingPriceColor(price) : '#999',
+          fillOpacity: hasData ? 0.7 : 0.4,
+        };
+      },
+      onEachFeature: (feature, layer) => {
+        const props =
+          /** @type {import('src/types/towns').GeoDataTownsProperties} */ (
+            feature.properties
+          );
+        const hasData = props.Prixm2Moyen > 0;
+        const tooltipContent = hasData
+          ? `
+          <strong>${props.nom}</strong><br>
+          Prix moyen : ${props.Prixm2Moyen.toLocaleString()} €/m²<br>
+          Nb. maisons : ${props.NbMaisons.toLocaleString()}<br>
+          Nb. appartements : ${props.NbApparts.toLocaleString()}<br>
+        `
+          : `
+          <strong>${props.nom}</strong><br>
+          Pas de données disponibles
+        `;
+
+        layer.bindTooltip(tooltipContent, {
+          direction: 'top',
+          permanent: false,
+          offset: [0, -10],
+          sticky: true,
+          className: 'map-tooltip',
+        });
+
+        layer.on('mouseover', () => {
+          /** @type {import('leaflet').Path} */ (layer).setStyle({
+            weight: 3,
+            fillOpacity: 0.9,
+          });
+        });
+
+        layer.on('mouseout', () => {
+          const price = props?.Prixm2Moyen ?? 0;
+          const hasData = price > 0;
+          /** @type {import('leaflet').Path} */ (layer).setStyle({
+            weight: 1,
+            fillOpacity: hasData ? 0.7 : 0.4,
+            fillColor: hasData ? getHousingPriceColor(price) : '#999',
+          });
+        });
+      },
+    });
+
+    this.#housingLayer.addTo(this.#map);
+  }
+
+  /**
+   * Hides the housing prices layer from the map.
+   */
+  hideHousing() {
+    if (!this.#housingLayer) return;
+
+    this.#map.removeLayer(this.#housingLayer);
+    this.#housingLayer = null;
+  }
+
+  /**
+   * Toggles the visibility of the housing prices layer.
+   *
+   * @returns {boolean} `true` if housing layer is now visible, `false` otherwise.
+   */
+  toggleHousing() {
+    if (this.#housingLayer) {
+      this.hideHousing();
+      return false;
+    }
+
+    this.showHousing();
+    return true;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
   // Monuments Layer
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -380,7 +525,7 @@ export class GeoMap {
           /** @type {import('src/types/monuments').GeoDataMonumentsProperties} */ (
             feature.properties
           );
-        const name = props.name ?? 'Monument inconnu';
+        const name = props.nom_du_site ?? 'Monument inconnu';
         layer.bindTooltip(name, { direction: 'top', offset: [0, -6] });
       },
     });
@@ -440,7 +585,7 @@ export class GeoMap {
         fillOpacity: opacity,
       });
 
-      cell.bindTooltip(`Bruit: ${value.toFixed(2)}`, {
+      cell.bindTooltip(`Bruit : ${getQualityLabel(value)}`, {
         direction: 'top',
         offset: [0, -5],
       });
@@ -503,7 +648,7 @@ export class GeoMap {
         fillOpacity: opacity,
       });
 
-      cell.bindTooltip(`Pollution: ${value.toFixed(2)}`, {
+      cell.bindTooltip(`Pollution : ${getQualityLabel(value)}`, {
         direction: 'top',
         offset: [0, -5],
       });
@@ -550,27 +695,21 @@ export class GeoMap {
   showBusStops() {
     if (this.#busStopsLayer) return;
 
-    // Filter only bus_stop features
-    const busStopFeatures = this.#geoData.features.filter(
-      (feature) => feature.properties?.fclass === 'bus_stop',
-    );
-
-    const busStopsCollection = {
-      type: /** @type {const} */ ('FeatureCollection'),
-      features: busStopFeatures,
-    };
-
-    this.#busStopsLayer = new GeoJSON(busStopsCollection, {
+    this.#busStopsLayer = new GeoJSON(this.#geoData, {
       pointToLayer: (_, latlng) => new CircleMarker(latlng, BUS_STOP_STYLE),
       onEachFeature: (feature, layer) => {
-        const props = feature.properties;
-        const stopName = props?.['Nom arret'] ?? 'Arrêt inconnu';
-        const commune = props?.['Nom commune'] ?? '';
-        const street = props?.['Nom rue la plus proche'] ?? '';
+        const props =
+          /** @type {import('src/types/geodata').GeoDataProperties} */ (
+            feature.properties
+          );
+        const stopName = props.nom;
+        const commune = props.nom_comm;
+        const street = props.near_road;
+        const monument = props.near_monu;
 
         const tooltipContent = `
           <strong>${stopName}</strong><br>
-          ${commune}${street ? `<br>${street}` : ''}
+          ${commune}${street ? `<br>${street}` : ''}${`<br>Proche de: ${monument}`}
         `;
 
         layer.bindTooltip(tooltipContent, {

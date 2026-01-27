@@ -114,63 +114,19 @@
         <div class="end">
           <aside class="layers">
             <fieldset>
-              <legend class="visually-hidden">Couches de données</legend>
+              <legend class="visually-hidden">Couche de données</legend>
               <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-towns"
-                  name="layers"
-                  value="towns"
-                  checked
-                >
-                <label for="layer-towns">Communes</label>
-              </form-group>
-              <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-roads"
-                  name="layers"
-                  value="roads"
-                  checked
-                >
-                <label for="layer-roads">Routes</label>
-              </form-group>
-              <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-monuments"
-                  name="layers"
-                  value="monuments"
-                  checked
-                >
-                <label for="layer-monuments">Monuments</label>
-              </form-group>
-              <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-noise"
-                  name="layers"
-                  value="noise"
-                >
-                <label for="layer-noise">Bruit</label>
-              </form-group>
-              <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-pollution"
-                  name="layers"
-                  value="pollution"
-                >
-                <label for="layer-pollution">Pollution</label>
-              </form-group>
-              <form-group>
-                <input
-                  type="checkbox"
-                  id="layer-bus-stops"
-                  name="layers"
-                  value="busStops"
-                >
-                <label for="layer-bus-stops">Arrêts de bus</label>
+                <label for="layer-select">Couche</label>
+                <select id="layer-select" name="layer">
+                  <option value="">Aucune</option>
+                  <option value="towns" selected>Communes</option>
+                  <option value="roads">Routes</option>
+                  <option value="monuments">Monuments</option>
+                  <option value="noise">Bruit</option>
+                  <option value="pollution">Pollution</option>
+                  <option value="busStops">Arrêts de bus</option>
+                  <option value="housing">Prix immobilier</option>
+                </select>
               </form-group>
             </fieldset>
           </aside>

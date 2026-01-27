@@ -52,8 +52,9 @@ export class App {
   }
 
   #setupLayerControls() {
-    /** @type {NodeListOf<HTMLInputElement>} */
-    const layerCheckboxes = document.querySelectorAll('input[name="layers"]');
+    /** @type {HTMLSelectElement | null} */
+    const layerSelect = document.querySelector('#layer-select');
+    if (!layerSelect) return;
 
     /** @type {Record<string, { show: () => void; hide: () => void }>} */
     const layerActions = {
@@ -81,25 +82,43 @@ export class App {
         show: () => this.#geoMap.showBusStops(),
         hide: () => this.#geoMap.hideBusStops(),
       },
+      housing: {
+        show: () => this.#geoMap.showHousing(),
+        hide: () => this.#geoMap.hideHousing(),
+      },
     };
 
-    layerCheckboxes.forEach((checkbox) => {
-      const actions = layerActions[checkbox.value];
-      if (!actions) return;
+    /** @type {string} */
+    let _currentLayer = '';
 
-      // Apply initial state
-      if (checkbox.checked) {
+    /**
+     * Hides all layers.
+     */
+    const hideAllLayers = () => {
+      Object.values(layerActions).forEach((actions) => {
+        actions.hide();
+      });
+    };
+
+    /**
+     * Shows the selected layer.
+     * @param {string} layerValue
+     */
+    const showLayer = (layerValue) => {
+      hideAllLayers();
+      _currentLayer = layerValue;
+      const actions = layerActions[layerValue];
+      if (actions) {
         actions.show();
       }
+    };
 
-      // Listen for changes
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          actions.show();
-        } else {
-          actions.hide();
-        }
-      });
+    // Apply initial state
+    showLayer(layerSelect.value);
+
+    // Listen for changes
+    layerSelect.addEventListener('change', () => {
+      showLayer(layerSelect.value);
     });
   }
 }
