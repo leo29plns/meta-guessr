@@ -1,8 +1,8 @@
 import type { Feature, FeatureCollection, Point } from 'geojson';
 
 export interface GeoDataMonumentsProperties {
-  fid: number;
-  name: string | null;
+  nom_du_site: string;
+  commentaires: string | null;
 }
 
 export type GeoDataMonumentsFeature = Feature<
