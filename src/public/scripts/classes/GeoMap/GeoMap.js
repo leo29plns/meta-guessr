@@ -1,29 +1,30 @@
 import { Map as LeafletMap, latLngBounds, TileLayer } from 'leaflet';
+import { Module } from '../Module/Module.js';
 
 /**
  * @import { Bounds, Coordinates } from 'src/types/coordinates'
+ * @import { Bus } from '@/scripts/classes/Bus/Bus.js'
  */
 
-export class GeoMap {
+export class GeoMap extends Module {
   /** @type {LeafletMap} */
   #map;
 
   /**
-   * @param {string} [containerId]
-   * @param {Coordinates} [center]
-   * @param {number} [zoom]
-   * @param {Bounds} [maxBounds]
+   * @param {Bus} bus
+   * @param {string} containerId
+   * @param {Coordinates} center
+   * @param {number} zoom
+   * @param {number} minZoom
+   * @param {Bounds} maxBounds
    */
-  constructor(
-    containerId = 'map',
-    center = { lat: 48.709167, lng: 2.504722 },
-    zoom = 9,
-    maxBounds,
-  ) {
+  constructor(bus, containerId, center, zoom, minZoom, maxBounds) {
+    super(bus);
+
     this.#map = new LeafletMap(containerId, {
       zoomControl: false,
-      maxBounds:
-        maxBounds && latLngBounds(maxBounds.southWest, maxBounds.northEast),
+      minZoom,
+      maxBounds: latLngBounds(maxBounds.southWest, maxBounds.northEast),
     }).setView(center, zoom);
 
     new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

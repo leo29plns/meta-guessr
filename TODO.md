@@ -1,1 +1,2 @@
-- [] Biome JSDoc support
+- [ ] Biome JSDoc support
+- [ ] Update README (nvm removal)
