@@ -21,15 +21,19 @@ export class App {
   #geoMap;
 
   /** @type {Game} */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
   #game;
 
   /** @type {GuessManager} */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
   #guessManager;
 
   /** @type {RoundScoreManager} */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
   #roundScoreManager;
 
   /** @type {GameScoreManager} */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: private instance
   #gameScoreManager;
 
   constructor() {
@@ -55,8 +59,6 @@ export class App {
 
     this.#setupZoomControls();
     this.#setupModeControls();
-
-    console.log(this.#mode, this.#geoMap, this.#game, this.#guessManager);
   }
 
   #setupZoomControls() {
