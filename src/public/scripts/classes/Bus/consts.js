@@ -6,6 +6,7 @@ export const EVENTS = /** @type {const} */ ({
   GUESS_SUBMITTED: 'guess:submitted',
   SCORE_UPDATED: 'score:updated',
   ROUND_STARTED: 'round:started',
+  ROUND_ENDED: 'round:ended',
 });
 
 /**

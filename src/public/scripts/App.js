@@ -1,6 +1,7 @@
 import { GeoMap } from '@/scripts/classes/GeoMap/GeoMap.js';
 import { ModeManager } from '@/scripts/classes/ModeManager/ModeManager.js';
 import { Bus } from './classes/Bus/Bus.js';
+import { RoundScoreManager } from './classes/DialogManager/RoundScoreManager.js';
 import { Game } from './classes/Game/Game.js';
 import { GuessManager } from './classes/GuessManager/GuessManager.js';
 
@@ -20,6 +21,9 @@ export class App {
   /** @type {GuessManager} */
   #guessManager;
 
+  /** @type {RoundScoreManager} */
+  #roundScoreManager;
+
   constructor() {
     const idfCenter = { lat: 48.709167, lng: 2.504722 };
     const idfBoundings = {
@@ -38,6 +42,11 @@ export class App {
     this.#game = new Game(this.#bus);
     this.#geoMap = new GeoMap(this.#bus, 'map', idfCenter, 10, 9, idfBoundings);
     this.#guessManager = new GuessManager(this.#bus, 'guess');
+    this.#roundScoreManager = new RoundScoreManager(
+      this.#bus,
+      'round-score',
+      'next-round',
+    );
 
     this.#setupZoomControls();
     this.#setupModeControls();

@@ -17,7 +17,6 @@ export class GuessManager extends Module {
   constructor(bus, formId) {
     super(bus);
 
-    /** @type {HTMLElement | null} */
     const form = document.getElementById(formId);
 
     if (!form) {

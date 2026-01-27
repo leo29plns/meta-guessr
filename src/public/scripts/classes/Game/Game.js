@@ -28,6 +28,10 @@ export class Game extends Module {
     this.bus.on(EVENTS.GUESS_SUBMITTED, (/** @type {Coordinates} */ data) =>
       this.handleGuess(data),
     );
+
+    this.bus.on(EVENTS.ROUND_STARTED, (/** @type {Coordinates} */ data) =>
+      this.startNextRound(),
+    );
   }
 
   startNextRound() {
