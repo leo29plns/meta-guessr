@@ -1,5 +1,4 @@
 import { haversineDistance } from '@/scripts/utils/haversineDistance.js';
-import { EVENTS } from '../Bus/consts.js';
 import { Module } from '../Module/Module.js';
 import { SCORE_THRESHOLDS, STATUSES } from './consts.js';
 
@@ -57,7 +56,7 @@ export class GameRound extends Module {
     this.#score = this.#calculateScore(distance);
     this.#status = STATUSES.COMPLETED;
 
-    this.bus.emit(EVENTS.ROUND_ENDED, this);
+    this.bus.emit('round:ended', this);
   }
 
   /**

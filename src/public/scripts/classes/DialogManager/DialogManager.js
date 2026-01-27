@@ -6,7 +6,10 @@ import { Module } from '../Module/Module.js';
 
 export class DialogManager extends Module {
   /** @type {HTMLDialogElement} */
-  #dialog;
+  dialog;
+
+  /** @type {HTMLButtonElement} */
+  nextBtn;
 
   /**
    * @param {Bus} bus
@@ -21,14 +24,25 @@ export class DialogManager extends Module {
       throw new Error(`Unable to find dialog.`);
     }
 
-    this.#dialog = /** @type {HTMLDialogElement} */ (dialog);
+    const nextBtn = dialog.querySelector('[data-action="next"]');
+
+    if (!nextBtn) {
+      throw new Error(`Unable to find next button.`);
+    }
+
+    this.dialog = /** @type {HTMLDialogElement} */ (dialog);
+    this.nextBtn = /** @type {HTMLButtonElement} */ (nextBtn);
+
+    this.setupListeners();
   }
 
   show() {
-    this.#dialog.showModal();
+    this.dialog.showModal();
   }
 
   close() {
-    this.#dialog.close();
+    this.dialog.close();
   }
+
+  setupListeners() {}
 }

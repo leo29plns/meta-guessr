@@ -1,24 +1,26 @@
 /**
- * @import { Event } from './consts'
+ * @import { EventRegistry } from 'src/types/events'
  */
 
 export class Bus {
   #target = new EventTarget();
 
   /**
-   * @param {Event} event
-   * @param {any} data
+   * @template {keyof EventRegistry & string} K
+   * @param {K} eventName
+   * @param {EventRegistry[K]} [data]
    */
-  emit(event, data) {
-    this.#target.dispatchEvent(new CustomEvent(event, { detail: data }));
+  emit(eventName, data) {
+    this.#target.dispatchEvent(new CustomEvent(eventName, { detail: data }));
   }
 
   /**
-   * @param {Event} event
-   * @param {Function} callback
+   * @template {keyof EventRegistry & string} K
+   * @param {K} eventName
+   * @param {(data: EventRegistry[K]) => void} callback
    */
-  on(event, callback) {
-    this.#target.addEventListener(event, (e) => {
+  on(eventName, callback) {
+    this.#target.addEventListener(eventName, (e) => {
       const customEvent = /** @type {CustomEvent} */ (e);
       callback(customEvent.detail);
     });

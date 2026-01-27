@@ -1,4 +1,3 @@
-import { EVENTS } from '../Bus/consts.js';
 import { STATUSES } from '../GameRound/consts.js';
 import { GameRound } from '../GameRound/GameRound.js';
 import { GeoData } from '../GeoData/GeoData.js';
@@ -25,20 +24,15 @@ export class Game extends Module {
     this.createRounds(6);
     this.startNextRound();
 
-    this.bus.on(EVENTS.GUESS_SUBMITTED, (/** @type {Coordinates} */ data) =>
-      this.handleGuess(data),
-    );
-
-    this.bus.on(EVENTS.ROUND_STARTED, (/** @type {Coordinates} */ data) =>
-      this.startNextRound(),
-    );
+    this.bus.on('guess:submitted', (data) => this.handleGuess(data));
+    this.bus.on('round:started', () => this.startNextRound());
   }
 
   startNextRound() {
     const nextRound = this.#nextRound;
 
     if (!nextRound) {
-      console.log('Game Over! Total Score:', this.totalScore);
+      this.bus.emit('game:ended');
       return;
     }
 

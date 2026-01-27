@@ -1,4 +1,3 @@
-import { EVENTS } from '../Bus/consts.js';
 import { Module } from '../Module/Module.js';
 
 /**
@@ -39,7 +38,7 @@ export class GuessManager extends Module {
         lng: Number(data.get('lng')),
       };
 
-      this.bus.emit(EVENTS.GUESS_SUBMITTED, coords);
+      this.bus.emit('guess:submitted', coords);
     });
   }
 }
