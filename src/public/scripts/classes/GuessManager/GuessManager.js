@@ -9,6 +9,12 @@ export class GuessManager extends Module {
   /** @type {HTMLFormElement} */
   #form;
 
+  /** @type {HTMLInputElement} */
+  #latInput;
+
+  /** @type {HTMLInputElement} */
+  #lngInput;
+
   /**
    * @param {Bus} bus
    * @param {string} formId
@@ -16,14 +22,25 @@ export class GuessManager extends Module {
   constructor(bus, formId) {
     super(bus);
 
-    const form = document.getElementById(formId);
+    this.setupListeners();
 
-    if (!form) {
+    const form = document.getElementById(formId);
+    const latInput = document.getElementById('lat');
+    const lngInput = document.getElementById('lng');
+
+    if (!form || !latInput || !lngInput) {
       throw new Error('Form element not found.');
     }
 
     this.#form = /** @type {HTMLFormElement} */ (form);
+    this.#latInput = /** @type {HTMLInputElement} */ (latInput);
+    this.#lngInput = /** @type {HTMLInputElement} */ (lngInput);
+
     this.#attachForm();
+  }
+
+  setupListeners() {
+    this.bus.on('round:ended', () => this.#form.reset());
   }
 
   #attachForm() {

@@ -18,12 +18,15 @@ export class Game extends Module {
   /** @param {Bus} bus */
   constructor(bus) {
     super(bus);
+    this.setupListeners();
 
     this.#geoData = new GeoData();
 
     this.createRounds(6);
     this.startNextRound();
+  }
 
+  setupListeners() {
     this.bus.on('guess:submitted', (data) => this.handleGuess(data));
     this.bus.on('round:started', () => this.startNextRound());
   }

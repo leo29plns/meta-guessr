@@ -17,6 +17,8 @@ export class Module {
     this.#bus = bus;
   }
 
+  setupListeners() {}
+
   get bus() {
     return this.#bus;
   }

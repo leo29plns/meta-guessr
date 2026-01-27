@@ -32,8 +32,6 @@ export class DialogManager extends Module {
 
     this.dialog = /** @type {HTMLDialogElement} */ (dialog);
     this.nextBtn = /** @type {HTMLButtonElement} */ (nextBtn);
-
-    this.setupListeners();
   }
 
   show() {
@@ -43,6 +41,4 @@ export class DialogManager extends Module {
   close() {
     this.dialog.close();
   }
-
-  setupListeners() {}
 }
