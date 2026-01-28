@@ -1,4 +1,4 @@
-import { circleMarker, geoJSON } from 'leaflet';
+import geodata from '@/data/geodata.geojson' with { type: 'json' };
 import monumentsData from '@/data/monuments.geojson' with { type: 'json' };
 import roadsData from '@/data/roads.geojson' with { type: 'json' };
 import sonAir3Data from '@/data/son_air3.geojson' with { type: 'json' };
@@ -10,11 +10,17 @@ import { GameScoreManager } from './classes/DialogManager/GameScoreManager.js';
 import { RoundScoreManager } from './classes/DialogManager/RoundScoreManager.js';
 import { Game } from './classes/Game/Game.js';
 import { GuessManager } from './classes/GuessManager/GuessManager.js';
+import { LayerFactory } from './classes/LayerManager/LayerFactory.js';
 import { LayerManager } from './classes/LayerManager/LayerManager.js';
 import { MapMetadataManager } from './classes/MapMetadataManager/MapMetadataManager.js';
 
 /**
  * @import { SelectableMode } from '@/scripts/classes/ModeManager/consts.js'
+ * @import { MonumentsCollection } from 'src/types/data/monuments.js'
+ * @import { RoadsCollection } from 'src/types/data/roads.js'
+ * @import { SonAir3Collection } from 'src/types/data/son_air3.js'
+ * @import { TownsCollection } from 'src/types/data/towns.js'
+ * @import { GeoDataCollection } from 'src/types/data/geodata.js'
  */
 
 export class App {
@@ -102,43 +108,44 @@ export class App {
   }
 
   #setupLayers() {
-    const monumentsLayer = geoJSON(monumentsData, {
-      onEachFeature: (feature, layer) => {
-        layer.bindPopup(`<b>${feature.properties.nom_du_site}</b>`);
-      },
-    });
-    this.#layerManager.register('monuments', monumentsLayer);
+    this.#layerManager.register(
+      'monuments',
+      LayerFactory.createMonuments(
+        /** @type {MonumentsCollection} */ (monumentsData),
+      ),
+    );
+    this.#layerManager.register(
+      'towns',
+      LayerFactory.createTowns(/** @type {TownsCollection} */ (townsData)),
+    );
+    this.#layerManager.register(
+      'housing',
+      LayerFactory.createHousing(/** @type {TownsCollection} */ (townsData)),
+    );
+    this.#layerManager.register(
+      'roads',
+      LayerFactory.createRoads(/** @type {RoadsCollection} */ (roadsData)),
+    );
+    this.#layerManager.register(
+      'bus',
+      LayerFactory.createBusStops(/** @type {GeoDataCollection} */ (geodata)),
+    );
 
-    const townsLayer = geoJSON(townsData, {
-      style: {
-        color: '#4a90e2',
-        weight: 2,
-        fillOpacity: 0.2,
-      },
-    });
-    this.#layerManager.register('towns', townsLayer);
+    this.#layerManager.register(
+      'noise',
+      LayerFactory.createHeatLayer(
+        /** @type {SonAir3Collection} */ (sonAir3Data),
+        'son_mean',
+      ),
+    );
+    this.#layerManager.register(
+      'pollution',
+      LayerFactory.createHeatLayer(
+        /** @type {SonAir3Collection} */ (sonAir3Data),
+        'polution_mean',
+      ),
+    );
 
-    const roadsLayer = geoJSON(roadsData, {
-      style: {
-        color: '#666',
-        weight: 1.5,
-      },
-    });
-    this.#layerManager.register('roads', roadsLayer);
-
-    const sonAirLayer = geoJSON(sonAir3Data, {
-      pointToLayer: (_, latlng) => {
-        return circleMarker(latlng, {
-          radius: 6,
-          fillColor: '#2ecc71',
-          color: '#27ae60',
-          weight: 1,
-          fillOpacity: 0.8,
-        });
-      },
-    });
-    this.#layerManager.register('son_air3', sonAirLayer);
-
-    this.#layerManager.select('son_air3');
+    this.#layerManager.select('noise');
   }
 }
