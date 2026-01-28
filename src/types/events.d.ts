@@ -1,8 +1,9 @@
-import { GameScoreManager } from '@/scripts/classes/DialogManager/GameScoreManager';
+import type { GameScoreManager } from '@/scripts/classes/DialogManager/GameScoreManager';
 import type { Game } from '@/scripts/classes/Game/Game.js';
 import type { GameRound } from '@/scripts/classes/GameRound/GameRound.js';
-import { GeoMap } from '@/scripts/classes/GeoMap/GeoMap';
-import { GuessManager } from '@/scripts/classes/GuessManager/GuessManager.js';
+import type { GeoMap } from '@/scripts/classes/GeoMap/GeoMap';
+import type { GuessManager } from '@/scripts/classes/GuessManager/GuessManager.js';
+import type { LayerManager } from '@/scripts/classes/LayerManager/LayerManager';
 
 export interface EventRegistry {
   'dialog:next-round': GameScoreManager;
@@ -10,5 +11,7 @@ export interface EventRegistry {
   'round:ended': GameRound;
   'guess:submitted': GuessManager;
   'game:ended': Game;
+  'map:loaded': GeoMap;
   'map:moved-pointer': GeoMap;
+  'layer:update': LayerManager;
 }

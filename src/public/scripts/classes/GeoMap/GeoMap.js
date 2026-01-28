@@ -1,10 +1,4 @@
-import {
-  Map as LeafletMap,
-  latLngBounds,
-  layerGroup,
-  marker,
-  TileLayer,
-} from 'leaflet';
+import { Map as LeafletMap, latLngBounds, marker, TileLayer } from 'leaflet';
 import { Module } from '../Module/Module.js';
 
 /**
@@ -23,11 +17,8 @@ export class GeoMap extends Module {
   /** @type {Coordinates | null} */
   #pointerCoordinates = null;
 
-  /** @type {Map<string, Layer>} */
-  #layers = new Map([['default', layerGroup()]]);
-
-  /** @type {Layer} */
-  #activeLayer;
+  /** @type { Layer | null } */
+  #activeLayer = null;
 
   /**
    * @param {Bus} bus
@@ -51,15 +42,16 @@ export class GeoMap extends Module {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
 
-    this.#activeLayer = /** @type {Layer} */ (this.#layers.get('default'));
-    this.#activeLayer.addTo(this.#map);
-
     this.#setupClickEvent();
     this.setupListeners();
   }
 
   setupListeners() {
     this.bus.on('round:started', () => this.removePointer());
+
+    this.bus.on('layer:update', (layerManager) => {
+      this.#setActiveLayer(layerManager.activeLayer);
+    });
   }
 
   zoomIn() {
@@ -99,21 +91,14 @@ export class GeoMap extends Module {
   }
 
   /**
-   * @param {string} id
-   * @param {Layer} layer
+   * @param {Layer} nextLayer
    */
-  registerLayer(id, layer) {
-    this.#layers.set(id, layer);
-  }
+  #setActiveLayer(nextLayer) {
+    if (this.#activeLayer) {
+      this.#map.removeLayer(this.#activeLayer);
+    }
 
-  /**
-   * @param {string} id
-   */
-  selectLayer(id) {
-    const nextLayer = this.#layers.get(id) || this.#layers.get('default');
-
-    this.#map.removeLayer(this.#activeLayer);
-    this.#activeLayer = /** @type {Layer} */ (nextLayer);
+    this.#activeLayer = nextLayer;
     this.#activeLayer.addTo(this.#map);
   }
 

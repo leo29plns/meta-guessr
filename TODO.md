@@ -1,3 +1,4 @@
 - [ ] Biome JSDoc support
 - [ ] Update README (nvm removal)
 - [ ] Change Marker tab index to be BEFORE guess form
+- [ ] Create an history in local storage to play with new poi

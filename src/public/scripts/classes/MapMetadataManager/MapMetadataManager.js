@@ -43,25 +43,25 @@ export class MapMetadataManager extends Module {
       <li>
         <p>Commune</p>
         <data-group>
-          <data>${props['Nom commune']}</data>
+          <data>${props.nom_comm}</data>
         </data-group>
       </li>
       <li>
         <p>Population (2020)</p>
         <data-group>
-          <data value="${props['Population 2020']}">${Number(props['Population 2020']).toLocaleString()}</data> hab.
+          <data value="${props.pop2020}">${Number(props.pop2020).toLocaleString()}</data> hab.
         </data-group>
       </li>
       <li>
         <p>Revenu médian</p>
         <data-group>
-          <data>${props['Revenus median 2020']} €</data>
+          <data>${props.revMed2020} €</data>
         </data-group>
       </li>
       <li>
         <p>Rue la plus proche</p>
         <data-group>
-          <data>${props['Nom rue la plus proche'] || 'Inconnue'}</data>
+          <data>${props.near_road}</data>
         </data-group>
       </li>
     `;
