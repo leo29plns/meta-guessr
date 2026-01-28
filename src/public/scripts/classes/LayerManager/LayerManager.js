@@ -13,20 +13,40 @@ export class LayerManager extends Module {
   /** @type {Layer} */
   #activeLayer;
 
+  /** @type {HTMLSelectElement} */
+  #select;
+
   /**
    * @param {Bus} bus
+   * @param {string} selectId
    */
-  constructor(bus) {
+  constructor(bus, selectId) {
     super(bus);
+
+    const select = document.getElementById(selectId);
+
+    if (!select) {
+      throw new Error(`Unable to find layer select.`);
+    }
+
+    this.#select = /** @type {HTMLSelectElement} */ (select);
+
     this.#activeLayer = /** @type {Layer} */ (this.#layers.get('default'));
+
+    this.#attachSelect();
   }
 
   /**
    * @param {string} id
    * @param {Layer} layer
    */
-  register(id, layer) {
+  register(id, layer, label = id) {
     this.#layers.set(id, layer);
+
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+    this.#select.appendChild(option);
   }
 
   /**
@@ -39,6 +59,12 @@ export class LayerManager extends Module {
       this.#activeLayer = /** @type {import('leaflet').Layer} */ (next);
       this.bus.emit('layer:update', this);
     }
+  }
+
+  #attachSelect() {
+    this.#select.addEventListener('change', () => {
+      this.select(this.#select.value);
+    });
   }
 
   /** @returns {import('leaflet').Layer} */

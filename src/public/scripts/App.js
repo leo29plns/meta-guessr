@@ -73,7 +73,7 @@ export class App {
     this.#mode = new ModeManager();
     this.#mapMetadataManager = new MapMetadataManager(this.#bus, 'metadata');
     this.#geoMap = new GeoMap(this.#bus, 'map', idfCenter, 10, 9, idfBoundings);
-    this.#layerManager = new LayerManager(this.#bus);
+    this.#layerManager = new LayerManager(this.#bus, 'layer');
     this.#guessManager = new GuessManager(this.#bus, 'guess');
     this.#roundScoreManager = new RoundScoreManager(this.#bus, 'round-score');
     this.#gameScoreManager = new GameScoreManager(this.#bus, 'game-score');
