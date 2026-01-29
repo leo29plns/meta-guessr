@@ -33,7 +33,15 @@ export class GuessManager extends Module {
   }
 
   setupListeners() {
-    this.bus.on('round:ended', () => this.#form.reset());
+    this.bus.on('round:ended', () => {
+      this.#form.hidden = true;
+      this.#form.reset();
+    });
+
+    this.bus.on('round:started', () => {
+      this.#form.hidden = false;
+    });
+
     this.bus.on('map:moved-pointer', (geoMap) =>
       this.updateCoordinates(geoMap.pointerCoordinates),
     );
