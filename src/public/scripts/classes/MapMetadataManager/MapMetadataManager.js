@@ -1,8 +1,10 @@
+import { DataSlot } from '../DataSlot/DataSlot.js';
 import { Module } from '../Module/Module.js';
 
 /**
  * @import { Bus } from '@/scripts/classes/Bus/Bus.js'
- * @import { GeoDataFeature, GeoDataProperties } from 'src/types/data/geodata.js'
+ * @import { GeoDataProperties } from 'src/types/data/geodata.js'
+ * @import { SlotData } from 'src/types/slot'
  */
 
 export class MapMetadataManager extends Module {
@@ -11,15 +13,18 @@ export class MapMetadataManager extends Module {
 
   /**
    * @param {Bus} bus
-   * @param {string} containerId - L'ID de l'élément <aside id="metadata">
+   * @param {string} containerId
    */
   constructor(bus, containerId) {
     super(bus);
 
-    const el = document.getElementById(containerId);
-    if (!el) throw new Error(`Metadata container #${containerId} not found`);
+    const container = document.getElementById(containerId);
 
-    this.#container = el;
+    if (!container) {
+      throw new Error(`Metadata container #${containerId} not found`);
+    }
+
+    this.#container = container;
 
     this.setupListeners();
   }
@@ -34,38 +39,7 @@ export class MapMetadataManager extends Module {
    * @param {GeoDataProperties} props
    */
   #render(props) {
-    // On cible la liste dans ton aside
-    const list = this.#container.querySelector('ul');
-    if (!list) return;
-
-    // Exemple de rendu dynamique basé sur ton HTML actuel
-    list.innerHTML = `
-      <li>
-        <p>Commune</p>
-        <data-group>
-          <data>${props.nom_comm}</data>
-        </data-group>
-      </li>
-      <li>
-        <p>Population (2020)</p>
-        <data-group>
-          <data value="${props.pop2020}">${Number(props.pop2020).toLocaleString()}</data> hab.
-        </data-group>
-      </li>
-      <li>
-        <p>Revenu médian</p>
-        <data-group>
-          <data>${props.revMed2020} €</data>
-        </data-group>
-      </li>
-      <li>
-        <p>Rue la plus proche</p>
-        <data-group>
-          <data>${props.near_road}</data>
-        </data-group>
-      </li>
-    `;
+    const dataSlot = new DataSlot(this.#container);
+    dataSlot.update({ ...props });
   }
 }
-
-// TODO : this class is ABSOLUTELY not ready. Needs to use html template for ul list

@@ -7,12 +7,12 @@ import { GeoMap } from '@/scripts/classes/GeoMap/GeoMap.js';
 import { ModeManager } from '@/scripts/classes/ModeManager/ModeManager.js';
 import { Bus } from './classes/Bus/Bus.js';
 import { GameScoreManager } from './classes/DialogManager/GameScoreManager.js';
-import { RoundScoreManager } from './classes/DialogManager/RoundScoreManager.js';
 import { Game } from './classes/Game/Game.js';
 import { GuessManager } from './classes/GuessManager/GuessManager.js';
 import { LayerFactory } from './classes/LayerManager/LayerFactory.js';
 import { LayerManager } from './classes/LayerManager/LayerManager.js';
 import { MapMetadataManager } from './classes/MapMetadataManager/MapMetadataManager.js';
+import { RoundScoreManager } from './classes/PopoverManager/RoundScoreManager.js';
 
 /**
  * @import { SelectableMode } from '@/scripts/classes/ModeManager/consts.js'
@@ -81,7 +81,7 @@ export class App {
 
     this.#setupZoomControls();
     this.#setupModeControls();
-    this.#setupLayers();
+    // this.#setupLayers();
   }
 
   #setupZoomControls() {
@@ -113,22 +113,31 @@ export class App {
       LayerFactory.createMonuments(
         /** @type {MonumentsCollection} */ (monumentsData),
       ),
+      'Monuments',
     );
+
     this.#layerManager.register(
       'towns',
       LayerFactory.createTowns(/** @type {TownsCollection} */ (townsData)),
+      'Communes',
     );
+
     this.#layerManager.register(
       'housing',
       LayerFactory.createHousing(/** @type {TownsCollection} */ (townsData)),
+      "Prix de l'immobilier",
     );
+
     this.#layerManager.register(
       'roads',
       LayerFactory.createRoads(/** @type {RoadsCollection} */ (roadsData)),
+      'Routes',
     );
+
     this.#layerManager.register(
       'bus',
       LayerFactory.createBusStops(/** @type {GeoDataCollection} */ (geodata)),
+      'Arrêts de bus',
     );
 
     this.#layerManager.register(
@@ -137,15 +146,16 @@ export class App {
         /** @type {SonAir3Collection} */ (sonAir3Data),
         'son_mean',
       ),
+      'Qualité sonore',
     );
+
     this.#layerManager.register(
       'pollution',
       LayerFactory.createHeatLayer(
         /** @type {SonAir3Collection} */ (sonAir3Data),
         'polution_mean',
       ),
+      "Pollution de l'air",
     );
-
-    this.#layerManager.select('noise');
   }
 }

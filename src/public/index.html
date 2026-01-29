@@ -57,27 +57,36 @@
         <div class="start">
           <aside class="metadata" id="metadata">
             <h1>map: metadata</h1>
-            <ul>
-              <li>
-                <p>Densité démographique</p>
-                <data-group>
-                  <data value="3500">3 500</data>pers/km²
-                </data-group>
-              </li>
-              <li>
-                <p>Superficie</p>
-                <data-group>
-                  <data value="54321">54 321</data>km²
-                </data-group>
-              </li>
-              <li>
-                <p>Population totale</p>
-                <data-group>
-                  <data value="12000000">12 000 000</data>hab.
-                  <data-scale>DATA</data-scale>
-                </data-group>
-              </li>
-            </ul>
+            <dl>
+              <div>
+                <dt>Superficie</dt>
+                <dd><span data-slot="superfic"></span>&nbsp;km²</dd>
+              </div>
+              <div>
+                <dt>Naissances en 2022</dt>
+                <dd><span data-slot="naiss2022"></span></dd>
+              </div>
+              <div>
+                <dt>Décès en 2022</dt>
+                <dd><span data-slot="deces2022"></span></dd>
+              </div>
+              <div>
+                <dt>Revenu médian en 2020</dt>
+                <dd><span data-slot="revMed2020"></span>&nbsp;€</dd>
+              </div>
+              <div>
+                <dt>Prix moyen du m²</dt>
+                <dd><span data-slot="achat_moyen_m2"></span>&nbsp;€</dd>
+              </div>
+              <div>
+                <dt>Axe routier proche</dt>
+                <dd><span data-slot="near_road"></span></dd>
+              </div>
+              <div>
+                <dt>Monument notable</dt>
+                <dd><span data-slot="near_monu"></span></dd>
+              </div>
+            </dl>
           </aside>
           <aside class="controls">
             <div class="settings">
@@ -112,34 +121,41 @@
         </div>
         <div class="end">
           <aside class="layers">
-            <select name="layer" id="layer"></select>
+            <form-group>
+              <label for="layer">Layer</label>
+              <select name="layer" id="layer">
+                <option value="default">Base</option>
+              </select>
+            </form-group>
           </aside>
           <aside class="actions">
             <form action="" id="guess">
-              <form-group class="visually-hidden-focusable">
-                <label for="lat">Latitude</label>
-                <input
-                  type="number"
-                  name="lat"
-                  id="lat"
-                  step="0.000001"
-                  min="-180"
-                  max="180"
-                  required
-                >
-              </form-group>
-              <form-group class="visually-hidden-focusable">
-                <label for="lng">Longitude</label>
-                <input
-                  type="number"
-                  name="lng"
-                  id="lng"
-                  step="0.000001"
-                  min="0"
-                  max="360"
-                  required
-                >
-              </form-group>
+              <div class="form-hidden visually-hidden-focusable">
+                <form-group>
+                  <label for="lat">Latitude</label>
+                  <input
+                    type="number"
+                    name="lat"
+                    id="lat"
+                    step="0.000001"
+                    min="-180"
+                    max="180"
+                    required
+                  >
+                </form-group>
+                <form-group>
+                  <label for="lng">Longitude</label>
+                  <input
+                    type="number"
+                    name="lng"
+                    id="lng"
+                    step="0.000001"
+                    min="0"
+                    max="360"
+                    required
+                  >
+                </form-group>
+              </div>
               <button type="submit">Guess!</button>
             </form>
           </aside>
@@ -149,13 +165,22 @@
       <div id="map"></div>
     </main>
 
-    <dialog id="round-score" class="round-score">
-      <h1>Vous n'étiez pas très loin</h1>
-
+    <aside popover="manual" id="round-score" class="round-score">
+      <h1>Fin du tour <span data-slot="round-number"></span> </h1>
+      <dl>
+        <div>
+          <dt>Distance</dt>
+          <dd><span data-slot="distance"></span> km</dd>
+        </div>
+        <div>
+          <dt>Score</dt>
+          <dd><span data-slot="score"></span> points</dd>
+        </div>
+      </dl>
       <button data-action="next" aria-label="Passer au round suivant">
-        <ui-icon name="x"></ui-icon>
+        Suivant <ui-icon name="x"></ui-icon>
       </button>
-    </dialog>
+    </aside>
 
     <dialog id="game-score" class="score-score">
       <h1>Fin de jeu !</h1>

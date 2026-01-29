@@ -36,8 +36,15 @@ aside.metadata {
   pointer-events: auto;
   background-color: var(--color-primary);
   padding: 1rem;
+  max-width: 20rem;
 
-  data {
+  dl {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  dt {
+    font-weight: bold;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum";
   }
@@ -74,6 +81,13 @@ aside.controls {
 }
 
 aside.actions {
+  anchor-name: --form-guess;
+
+  .form-hidden {
+    display: grid;
+    gap: 1rem;
+  }
+
   form {
     gap: 1rem;
   }
@@ -86,4 +100,11 @@ dialog.settings {
   &[open] {
     display: grid;
   }
+}
+
+aside.round-score {
+  position-anchor: --form-guess;
+  inset: auto;
+  inset-block-end: anchor(end);
+  inset-inline-end: anchor(end);
 }

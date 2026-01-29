@@ -2,6 +2,7 @@ import { STATUSES } from '../GameRound/consts.js';
 import { GameRound } from '../GameRound/GameRound.js';
 import { GeoData } from '../GeoData/GeoData.js';
 import { Module } from '../Module/Module.js';
+import { ROUNDS_COUNT } from './consts.js';
 
 /**
  * @import { Coordinates } from 'src/types/coordinates.js'
@@ -21,7 +22,7 @@ export class Game extends Module {
 
     this.#geoData = new GeoData();
 
-    this.createRounds(6);
+    this.createRounds(ROUNDS_COUNT);
     this.startNextRound();
     this.setupListeners();
   }
@@ -30,7 +31,10 @@ export class Game extends Module {
     this.bus.on('guess:submitted', (guessManager) =>
       this.handleGuess(guessManager.coordinates),
     );
+
     this.bus.on('dialog:next-round', () => this.startNextRound());
+
+    this.bus.on('ui:game-restart', () => this.restart());
   }
 
   startNextRound() {
@@ -58,6 +62,11 @@ export class Game extends Module {
    */
   handleGuess(formData) {
     this.currentRound?.submitGuess(formData);
+  }
+
+  restart() {
+    this.createRounds(ROUNDS_COUNT);
+    this.startNextRound();
   }
 
   get currentRound() {

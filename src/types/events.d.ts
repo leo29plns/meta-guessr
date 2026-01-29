@@ -11,6 +11,7 @@ export interface EventRegistry {
   'round:ended': GameRound;
   'guess:submitted': GuessManager;
   'game:ended': Game;
+  'ui:game-restart': undefined;
   'map:loaded': GeoMap;
   'map:moved-pointer': GeoMap;
   'layer:update': LayerManager;

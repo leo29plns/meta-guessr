@@ -34,11 +34,13 @@ export class DialogManager extends Module {
     this.nextBtn = /** @type {HTMLButtonElement} */ (nextBtn);
   }
 
+  attachEventListeners() {}
+
   show() {
     this.dialog.showModal();
   }
 
-  close() {
+  hide() {
     this.dialog.close();
   }
 }

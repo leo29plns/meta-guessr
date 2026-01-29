@@ -4,6 +4,7 @@ import { Module } from '../Module/Module.js';
 /**
  * @import { Marker, Layer } from 'leaflet'
  * @import { Bounds, Coordinates } from 'src/types/coordinates'
+ * @import { GeoDataFeature } from 'src/types/data/geodata'
  * @import { Bus } from '@/scripts/classes/Bus/Bus.js'
  */
 
@@ -14,11 +15,17 @@ export class GeoMap extends Module {
   /** @type {Marker | null} */
   #pointer = null;
 
+  /** @type {Marker | null} */
+  #targetMarker = null;
+
   /** @type {Coordinates | null} */
   #pointerCoordinates = null;
 
   /** @type { Layer | null } */
   #activeLayer = null;
+
+  /** @type {boolean} */
+  #isFrozen = false;
 
   /**
    * @param {Bus} bus
@@ -47,7 +54,15 @@ export class GeoMap extends Module {
   }
 
   setupListeners() {
-    this.bus.on('round:started', () => this.removePointer());
+    this.bus.on('round:started', () => {
+      this.#isFrozen = false;
+      this.#removeMarkers();
+    });
+
+    this.bus.on('round:ended', (gameRound) => {
+      this.#isFrozen = true;
+      this.#showTarget(gameRound.poi);
+    });
 
     this.bus.on('layer:update', (layerManager) => {
       this.#setActiveLayer(layerManager.activeLayer);
@@ -64,6 +79,8 @@ export class GeoMap extends Module {
 
   #setupClickEvent() {
     this.#map.on('click', (e) => {
+      if (this.#isFrozen) return;
+
       this.#pointerCoordinates = e.latlng;
       this.movePointer(e.latlng);
 
@@ -82,11 +99,36 @@ export class GeoMap extends Module {
     }
   }
 
-  removePointer() {
-    if (!this.#pointer) return;
+  /**
+   * @param {GeoDataFeature} poi
+   */
+  #showTarget(poi) {
+    const [lng, lat] = poi.geometry.coordinates;
 
-    this.#pointer.remove();
-    this.#pointer = null;
+    this.#targetMarker = marker([lat, lng], {
+      title: 'Réponse',
+    }).addTo(this.#map);
+
+    if (this.#pointer) {
+      const group = latLngBounds([
+        this.#pointer.getLatLng(),
+        this.#targetMarker.getLatLng(),
+      ]);
+      this.#map.fitBounds(group, { padding: [50, 50] });
+    }
+  }
+
+  #removeMarkers() {
+    if (this.#pointer) {
+      this.#pointer.remove();
+      this.#pointer = null;
+    }
+
+    if (this.#targetMarker) {
+      this.#targetMarker.remove();
+      this.#targetMarker = null;
+    }
+
     this.#pointerCoordinates = null;
   }
 
